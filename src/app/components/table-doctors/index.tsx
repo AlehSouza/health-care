@@ -62,8 +62,8 @@ const Index = () => {
         const onSubmit = (e: any) => {
             const today = new Date()
             const year = today.getFullYear()
-            const month = today.getMonth()
-            const day = today.getDay()
+            const month = today.getMonth() + 1
+            const day = today.getDate()
 
             const created_at = `${year}-${month}-${day}`
             const address = `${e.street}, ${e.number} - ${e.cep}`
@@ -315,7 +315,6 @@ const Index = () => {
 
     // Modal Update
     const ModalUpdateProfessional = () => {
-
         const {
             register,
             handleSubmit,
@@ -324,8 +323,10 @@ const Index = () => {
 
         const handleUpdateProfessional = (e: Professional) => {
             const professionalToUpdate = professionals.find(professional => professional.id === selectedProfessional?.id);
+            // @ts-ignore
+            const draft = { ...e, status: e.status === "true" ? true : false }
             if (professionalToUpdate) {
-                updateProfessional({ ...professionalToUpdate, ...e });
+                updateProfessional({ ...professionalToUpdate, ...draft });
             }
             onCloseUpdate()
         }

@@ -3,7 +3,10 @@
 import { Flex, Text } from '@chakra-ui/react'
 import { Breadcrumb, ChartProfessionals, DashboardCard, TableDoctors } from '../components'
 import { FaCalendarDay, FaCapsules, FaCheck, FaTimes } from 'react-icons/fa'
+import { useProfessional } from '@/contexts/professionalsContext'
+import { useCallback } from 'react'
 
+// Static, dont change
 const BreadcrumbPath = [
   {
     label: 'Umbaraco',
@@ -15,38 +18,62 @@ const BreadcrumbPath = [
   }
 ]
 
-const DashboardsCards = [
-  {
-    title: 'Profissionais',
-    tooltip: 'Quantidade de profissionais cadastrados na plataforma.',
-    color: '#1A936F',
-    quantity: 40,
-    icon: <FaCapsules color="white" />
-  },
-  {
-    title: 'Ativos',
-    tooltip: 'Quantidade de Profissionais cadastrados na plataforma com status igual a Ativo.',
-    color: '#0EBDFF',
-    quantity: 20,
-    icon: <FaCheck color="white" />
-  },
-  {
-    title: 'Inativos',
-    tooltip: 'Quantidade de Profissionais cadastrados na plataforma com status igual a Inativo.',
-    color: '#F06D57',
-    quantity: 20,
-    icon: <FaTimes color="white" />
-  },
-  {
-    title: 'Registros Mensal',
-    tooltip: 'Quantidade de Profissionais cadastrados na plataforma este mês.',
-    color: '#FFBBBE',
-    quantity: 5,
-    icon: <FaCalendarDay color="white" />
-  },
-]
-
 const Dashboard = () => {
+  const { professionals, getAllProfessionals, getByStatus, getByActualMonth, } = useProfessional()
+
+  const DashboardCards = useCallback(() => {
+
+    const dashboardsInfos = [
+      {
+        title: 'Profissionais',
+        tooltip: 'Quantidade de profissionais cadastrados na plataforma.',
+        color: '#1A936F',
+        quantity: getAllProfessionals(),
+        icon: <FaCapsules color="white" />
+      },
+      {
+        title: 'Registros Mensal',
+        tooltip: 'Quantidade de Profissionais cadastrados na plataforma este mês.',
+        color: '#FFBBBE',
+        quantity: getByActualMonth(),
+        icon: <FaCalendarDay color="white" />
+      },
+      {
+        title: 'Ativos',
+        tooltip: 'Quantidade de Profissionais cadastrados na plataforma com status igual a Ativo.',
+        color: '#0EBDFF',
+        quantity: getByStatus(true),
+        icon: <FaCheck color="white" />
+      },
+      {
+        title: 'Inativos',
+        tooltip: 'Quantidade de Profissionais cadastrados na plataforma com status igual a Inativo.',
+        color: '#F06D57',
+        quantity: getByStatus(false),
+        icon: <FaTimes color="white" />
+      },
+    ]
+
+    return (
+      <Flex gap={8} py={8} width={'60%'} userSelect={'none'} flexWrap={'wrap'} justifyContent={'space-between'}>
+        {
+          dashboardsInfos.map((dashboardItem, index: number) => {
+            return (
+              <DashboardCard
+                quantity={dashboardItem.quantity}
+                tooltip={dashboardItem.tooltip}
+                title={dashboardItem.title}
+                color={dashboardItem.color}
+                icon={dashboardItem.icon}
+                key={index}
+              />
+            )
+          })
+        }
+      </Flex >
+    )
+  }, [professionals])
+
   return (
     <Flex
       backgroundColor={'#ECE2D6'}
@@ -62,22 +89,7 @@ const Dashboard = () => {
         Overview
       </Text>
       <Flex width={'100%'} gap={8}>
-        <Flex gap={8} py={8} width={'60%'} userSelect={'none'} flexWrap={'wrap'}>
-          {
-            DashboardsCards.map((dashboardItem, index: number) => {
-              return (
-                <DashboardCard
-                  quantity={dashboardItem.quantity}
-                  tooltip={dashboardItem.tooltip}
-                  title={dashboardItem.title}
-                  color={dashboardItem.color}
-                  icon={dashboardItem.icon}
-                  key={index}
-                />
-              )
-            })
-          }
-        </Flex>
+        <DashboardCards />
         <Flex gap={8} py={8} width={'40%'} userSelect={'none'}>
           <ChartProfessionals />
         </Flex>

@@ -28,6 +28,9 @@ interface ProfessionalContextType {
     addProfessional: (newProfessional: Professional) => void,
     removeProfessional: (id: number) => void,
     updateProfessional: (updatedProfessional: Professional) => void,
+    getAllProfessionals: () => number,
+    getByStatus:(status: boolean) => number,
+    getByActualMonth: () => number,
 }
 
 const ProfessionalContext = createContext<ProfessionalContextType | undefined>(undefined)
@@ -51,7 +54,7 @@ export function ProviderProfessional({ children }: { children: ReactNode }) {
             "city": "São Paulo",
             "cfm": "ABC12345",
             "occupation": "Pediatria",
-            "created_at": "",
+            "created_at": "2024-03-28",
         },
         {
             "id": 1,
@@ -70,7 +73,7 @@ export function ProviderProfessional({ children }: { children: ReactNode }) {
             "city": "Belo Horizonte",
             "cfm": "DEF67890",
             "occupation": "Pediatria",
-            "created_at": "",
+            "created_at": "2024-03-28",
         },
         {
             "id": 2,
@@ -89,7 +92,7 @@ export function ProviderProfessional({ children }: { children: ReactNode }) {
             "city": "Rio de Janeiro",
             "cfm": "XYZ54321",
             "occupation": "Pediatria",
-            "created_at": "",
+            "created_at": "2024-03-28",
         },
         {
             "id": 3,
@@ -108,7 +111,7 @@ export function ProviderProfessional({ children }: { children: ReactNode }) {
             "city": "Curitiba",
             "cfm": "JKL54321",
             "occupation": "Pediatria",
-            "created_at": "",
+            "created_at": "2024-03-28",
         },
         {
             "id": 4,
@@ -127,7 +130,7 @@ export function ProviderProfessional({ children }: { children: ReactNode }) {
             "city": "Porto Alegre",
             "cfm": "GHI67890",
             "occupation": "Pediatria",
-            "created_at": "",
+            "created_at": "2024-03-28",
         },
         {
             "id": 5,
@@ -146,7 +149,7 @@ export function ProviderProfessional({ children }: { children: ReactNode }) {
             "city": "Recife",
             "cfm": "MNO12345",
             "occupation": "Pediatria",
-            "created_at": "",
+            "created_at": "2024-03-28",
         },
         {
             "id": 6,
@@ -165,7 +168,7 @@ export function ProviderProfessional({ children }: { children: ReactNode }) {
             "city": "Goiânia",
             "cfm": "PQR56789",
             "occupation": "Pediatria",
-            "created_at": "",
+            "created_at": "2024-04-28",
         },
         {
             "id": 7,
@@ -184,7 +187,7 @@ export function ProviderProfessional({ children }: { children: ReactNode }) {
             "city": "Fortaleza",
             "cfm": "STU67890",
             "occupation": "Pediatria",
-            "created_at": "",
+            "created_at": "2024-04-28",
         },
         {
             "id": 8,
@@ -203,7 +206,7 @@ export function ProviderProfessional({ children }: { children: ReactNode }) {
             "city": "Campo Grande",
             "cfm": "UVW12345",
             "occupation": "Pediatria",
-            "created_at": "",
+            "created_at": "2024-04-28",
         },
         {
             "id": 9,
@@ -222,7 +225,7 @@ export function ProviderProfessional({ children }: { children: ReactNode }) {
             "city": "Manaus",
             "cfm": "XYZ98765",
             "occupation": "Pediatria",
-            "created_at": "",
+            "created_at": "2024-04-28",
         },
         {
             "id": 10,
@@ -241,7 +244,7 @@ export function ProviderProfessional({ children }: { children: ReactNode }) {
             "city": "Belém",
             "cfm": "BCD23456",
             "occupation": "Pediatria",
-            "created_at": "",
+            "created_at": "2024-04-28",
         },
     ])
 
@@ -267,6 +270,31 @@ export function ProviderProfessional({ children }: { children: ReactNode }) {
         );
     }
 
+    const getAllProfessionals = () => {
+        return professionals.length
+    }
+
+    const getByStatus = (status: boolean) => {
+        // @ts-ignore
+        const draft = professionals.filter((professional) => professional.status === status || professional.status === `${status}`);
+        return draft.length
+    }
+
+    const getByActualMonth = () => {
+        const dataAtual = new Date();
+        const mesAtual = dataAtual.getMonth() + 1;
+
+        const draft = professionals.filter((profissional) => {
+            // @ts-ignore
+            const dataCriacao = new Date(profissional?.created_at);
+            const mesCriacao = dataCriacao.getMonth() + 1;
+
+            return mesCriacao === mesAtual;
+        });
+
+        return draft.length
+    }
+
     return (
         <ProfessionalContext.Provider
             value={{
@@ -275,6 +303,9 @@ export function ProviderProfessional({ children }: { children: ReactNode }) {
                 addProfessional,
                 removeProfessional,
                 updateProfessional,
+                getAllProfessionals,
+                getByStatus,
+                getByActualMonth,
             }}
         >
             {children}

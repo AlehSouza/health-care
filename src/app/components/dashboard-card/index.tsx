@@ -13,7 +13,14 @@ type IDashboardCard = {
 const Index = ({ title, color, icon, quantity, tooltip }: IDashboardCard) => {
     return (
         <Card
-            width={'48%'}
+            width={{
+                base: '0em',
+                sm: '100%', 
+                md: '100%', 
+                lg: '100%', 
+                xl: '47%', 
+                '2xl': '48%',
+            }}
             borderTop={`5px solid ${color}`}
         >
             <CardHeader>
