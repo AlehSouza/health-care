@@ -275,8 +275,7 @@ export function ProviderProfessional({ children }: { children: ReactNode }) {
     }
 
     const getByStatus = (status: boolean) => {
-        // @ts-ignore
-        const draft = professionals.filter((professional) => professional.status === status || professional.status === `${status}`);
+        const draft = professionals.filter((professional) => professional.status === status || professional?.status?.toString() === `${status}`);
         return draft.length
     }
 
@@ -285,6 +284,7 @@ export function ProviderProfessional({ children }: { children: ReactNode }) {
         const mesAtual = dataAtual.getMonth() + 1;
 
         const draft = professionals.filter((profissional) => {
+            // Ignore because the date is saving like string not date
             // @ts-ignore
             const dataCriacao = new Date(profissional?.created_at);
             const mesCriacao = dataCriacao.getMonth() + 1;

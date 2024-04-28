@@ -323,8 +323,7 @@ const Index = () => {
 
         const handleUpdateProfessional = (e: Professional) => {
             const professionalToUpdate = professionals.find(professional => professional.id === selectedProfessional?.id);
-            // @ts-ignore
-            const draft = { ...e, status: e.status === "true" ? true : false }
+            const draft = { ...e, status: e?.status?.toString() === "true" ? true : false }
             if (professionalToUpdate) {
                 updateProfessional({ ...professionalToUpdate, ...draft });
             }
