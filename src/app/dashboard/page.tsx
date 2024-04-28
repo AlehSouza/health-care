@@ -1,7 +1,7 @@
 'use client'
 
 import { Flex, Text } from '@chakra-ui/react'
-import { Breadcrumb, ChartProfessionals, DashboardCard, TableDoctors } from '../components'
+import { Breadcrumb, ChartProfessionals, DashboardCard, TableProfessionals } from '../components'
 import { FaCalendarDay, FaCapsules, FaCheck, FaTimes } from 'react-icons/fa'
 import { useProfessional } from '@/contexts/professionalsContext'
 import { useCallback } from 'react'
@@ -55,7 +55,7 @@ const Dashboard = () => {
     ]
 
     return (
-      <Flex gap={8} py={8} width={'60%'} userSelect={'none'} flexWrap={'wrap'} justifyContent={'space-between'}>
+      <Flex gap={8} py={8} width={'65%'} userSelect={'none'} flexWrap={'wrap'} justifyContent={'space-between'}>
         {
           dashboardsInfos.map((dashboardItem, index: number) => {
             return (
@@ -88,13 +88,13 @@ const Dashboard = () => {
       <Text width={'100%'} pt={8} fontWeight={'bold'} color={'#301E1A'}>
         Overview
       </Text>
-      <Flex width={'100%'} gap={8}>
+      <Flex width={'100%'} gap={8} justifyContent={'space-between'}>
         <DashboardCards />
-        <Flex gap={8} py={8} width={'40%'} userSelect={'none'}>
+        <Flex gap={8} py={8} width={'35%'} userSelect={'none'}>
           <ChartProfessionals />
         </Flex>
       </Flex>
-      <TableDoctors />
+      <TableProfessionals />
     </Flex >
   )
 }

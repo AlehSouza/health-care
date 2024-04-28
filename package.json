@@ -14,9 +14,11 @@
     "@emotion/react": "^11.11.4",
     "@emotion/styled": "^11.11.5",
     "@fontsource/poppins": "^5.0.14",
+    "chart.js": "^4.4.2",
     "framer-motion": "^11.1.7",
     "next": "13.4.6",
     "react": "^18",
+    "react-chartjs-2": "^5.2.0",
     "react-dom": "^18",
     "react-hook-form": "^7.51.3",
     "react-icons": "^5.1.0"

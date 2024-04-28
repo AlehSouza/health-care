@@ -4,7 +4,7 @@ import Breadcrumb from './breadcrumb'
 import DashboardCard from './dashboard-card'
 import ChartProfessionals from './chart-professionals'
 import Modal from './modal'
-import TableDoctors from './table-doctors'
+import TableProfessionals from './table-professionals'
 import Footer from './footer'
 
 export {
@@ -14,6 +14,6 @@ export {
     DashboardCard,
     Modal,
     ChartProfessionals,
-    TableDoctors,
+    TableProfessionals,
     Footer
 }
