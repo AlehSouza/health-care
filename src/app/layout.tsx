@@ -1,5 +1,6 @@
 // app/layout.tsx
 
+import { ProviderProfessional } from '@/contexts/professionalsContext'
 import { ProviderChakra } from '@/providers/chakra'
 
 export default function RootLayout({
@@ -8,13 +9,15 @@ export default function RootLayout({
   children: React.ReactNode,
 }) {
   return (
-    <html lang='en'>
+    <html lang='pt-BR'>
       <head>
         <title>Umbaraco</title>
       </head>
       <body>
         <ProviderChakra>
-          {children}
+          <ProviderProfessional>
+            {children}
+          </ProviderProfessional>
         </ProviderChakra>
       </body>
     </html>

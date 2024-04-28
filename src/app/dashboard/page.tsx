@@ -1,8 +1,8 @@
 'use client'
 
 import { Flex, Text } from '@chakra-ui/react'
-import { Breadcrumb, DashboardCard, TableDoctors } from '../components'
-import { FaCalendarDay, FaCapsules, FaCheck, FaChevronUp, FaTimes } from 'react-icons/fa'
+import { Breadcrumb, ChartProfessionals, DashboardCard, TableDoctors } from '../components'
+import { FaCalendarDay, FaCapsules, FaCheck, FaTimes } from 'react-icons/fa'
 
 const BreadcrumbPath = [
   {
@@ -61,21 +61,26 @@ const Dashboard = () => {
       <Text width={'100%'} pt={8} fontWeight={'bold'} color={'#301E1A'}>
         Overview
       </Text>
-      <Flex gap={8} py={8} width={'100%'} userSelect={'none'}>
-        {
-          DashboardsCards.map((dashboardItem, index: number) => {
-            return (
-              <DashboardCard
-                quantity={dashboardItem.quantity}
-                tooltip={dashboardItem.tooltip}
-                title={dashboardItem.title}
-                color={dashboardItem.color}
-                icon={dashboardItem.icon}
-                key={index}
-              />
-            )
-          })
-        }
+      <Flex width={'100%'} gap={8}>
+        <Flex gap={8} py={8} width={'60%'} userSelect={'none'} flexWrap={'wrap'}>
+          {
+            DashboardsCards.map((dashboardItem, index: number) => {
+              return (
+                <DashboardCard
+                  quantity={dashboardItem.quantity}
+                  tooltip={dashboardItem.tooltip}
+                  title={dashboardItem.title}
+                  color={dashboardItem.color}
+                  icon={dashboardItem.icon}
+                  key={index}
+                />
+              )
+            })
+          }
+        </Flex>
+        <Flex gap={8} py={8} width={'40%'} userSelect={'none'}>
+          <ChartProfessionals />
+        </Flex>
       </Flex>
       <TableDoctors />
     </Flex >
