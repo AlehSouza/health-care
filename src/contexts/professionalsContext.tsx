@@ -15,6 +15,7 @@ interface Professional {
     address?: string,
     street?: string,
     number?: string,
+    neighborhood?: string,
     cep?: string,
     uf?: string,
     city?: string,

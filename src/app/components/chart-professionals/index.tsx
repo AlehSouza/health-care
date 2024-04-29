@@ -114,7 +114,7 @@ const Index = () => {
                             <Heading size="md">Profissionais Ativos e Inativos</Heading>
                         </Box>
                     </Flex>
-                    <TooltipChakra label={"Representação gráfica de Profissionais Ativos e Inativos cadastrados na plataforma."} placement={"top"} textAlign={"center"} p={2} bgColor={"black"} borderRadius={"lg"}>
+                    <TooltipChakra label={"Representação gráfica de Profissionais por área cadastrados na plataforma."} placement={"top"} textAlign={"center"} p={2} bgColor={"black"} borderRadius={"lg"}>
                         <IconButton
                             variant="ghost"
                             colorScheme="gray"

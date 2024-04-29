@@ -14,7 +14,7 @@ type IModal = {
     isOpen: boolean
     color?: string,
     children: ReactNode
-    title?: string
+    title?: string | ReactNode,
     size?: string
 }
 
