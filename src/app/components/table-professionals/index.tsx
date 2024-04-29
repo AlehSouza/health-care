@@ -5,42 +5,18 @@ import { FaExclamationTriangle, FaEye, FaFileImage, FaPen, FaPlus, FaSearch, FaT
 import { useForm } from "react-hook-form";
 import { Modal } from "..";
 import { useCallback, useState } from "react";
-import { useProfessional } from "@/contexts/professionalsContext";
+import { useProfessional } from "@/contexts/professionals.context";
+import { Professional } from "@/types/professional.type";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup"
 import InputEnhanced from "../input-enhanced";
 import SelectEnhanced from "../select-enhanced";
-import zipCode from "@/app/helpers/zipCode";
+import zipCode from "@/services/zipcode.service";
 import Link from "next/link";
 import Image from "next/image";
 
-interface Professional {
-    id?: number,
-    image?: string,
-    name?: string,
-    status?: boolean | string,
-    cpf?: string,
-    rg?: string,
-    birth_date?: string,
-    email?: string,
-    phone?: string,
-    address?: string,
-    street?: string,
-    number?: string,
-    neighborhood?: string,
-    currency_hour?: string,
-    service?: string,
-    area_acting?: string,
-    cep?: string,
-    uf?: string,
-    city?: string,
-    register_cfm_crm?: string,
-    specialty?: string,
-    created_at?: string,
-}
-
 const Index = () => {
-    const { professionals, filteredProfessionals, addProfessional, removeProfessional, updateProfessional, getFilteredProfessionas, getByCpf } = useProfessional()
+    const { professionals, filteredProfessionals, addProfessional, removeProfessional, updateProfessional, getProfessionasFiltered, getProfessionalByCpf } = useProfessional()
     const [selectedProfessional, setSelectedProfessional] = useState<Professional>()
     const [fileImage, setFileImage] = useState<string | null>(null);
     const toast = useToast()
@@ -71,6 +47,23 @@ const Index = () => {
         onClose: onCloseUpdate
     } = useDisclosure()
 
+    const {
+        isOpen: isOpenView,
+        onOpen: onOpenView,
+        onClose: onCloseView
+    } = useDisclosure()
+
+    // Modal View
+    const ModalViewProfessional = () => {
+        return (
+            <Modal color={"#FFFFFF"} onClose={onCloseView} isOpen={isOpenView} closeButton={false}>
+                <Flex justifyContent={'center'} alignItems={'center'} flexDir={'column'} p={16}>
+                    {selectedProfessional?.name} 👍
+                </Flex>
+            </Modal>
+        )
+    }
+
     // Modal Add
     const ModalAddProfessional = () => {
 
@@ -79,11 +72,11 @@ const Index = () => {
             image: yup.string(),
             cpf: yup.string().required("O campo CPF é obrigatório"),
             service: yup.string().required("O campo Modalidade de Atendimento é obrigatório"),
-            currency_hour: yup.string().required("O campo Valor por hora é obrigatório"),
-            register_cfm_crm: yup.string().required("O campo CFM / CRM é obrigatório"),
-            area_acting: yup.string().required("O campo Area de atuação é obrigatório"),
+            currencyHour: yup.string().required("O campo Valor por hora é obrigatório"),
+            registerCfmCrm: yup.string().required("O campo CFM / CRM é obrigatório"),
+            regionActing: yup.string().required("O campo Area de atuação é obrigatório"),
             rg: yup.string().required("O campo RG é obrigatório"),
-            birth_date: yup.string().required("O campo Data de Nascimento é obrigatório"),
+            birthDate: yup.string().required("O campo Data de Nascimento é obrigatório"),
             email: yup.string().test('emailOrPhoneRequired', 'Preencha o Email caso não possuir nenhum telefone', function (value) {
                 const { phone } = this.parent;
                 return !!(value || phone);
@@ -140,7 +133,7 @@ const Index = () => {
                 image: fileImage
             }
 
-            if (getByCpf(e.cpf)) {
+            if (getProfessionalByCpf(e.cpf)) {
                 toast({
                     title: "Ops",
                     description: "Parece que o CPF que você tentou cadastrar já existe na plataforma.",
@@ -231,7 +224,7 @@ const Index = () => {
                                     id="image"
                                     onChange={(e) => { handleFileChange(e) }}
                                 />
-                                <Button my={1} bgColor={'#1A936F'} width={'100%'} zIndex={0} p={0}>
+                                <Button type="button" my={1} bgColor={'#1A936F'} width={'100%'} zIndex={0} p={0} _hover={{ bgColor: "#10644B" }}>
                                     <label htmlFor="image" style={{
                                         justifyContent: 'center',
                                         alignItems: 'center',
@@ -282,9 +275,9 @@ const Index = () => {
                             <Flex flexDir={"column"} width={"100%"}>
                                 <InputEnhanced
                                     label={"CFM / CRM"}
-                                    {...register("register_cfm_crm")}
+                                    {...register("registerCfmCrm")}
                                     isReq={true}
-                                    error={errors.register_cfm_crm}
+                                    error={errors.registerCfmCrm}
                                     placeholder="ABL23984"
                                     mask="defaultValue"
                                     maxLength={8}
@@ -293,9 +286,9 @@ const Index = () => {
                             <Flex flexDir={"column"} width={"100%"}>
                                 <InputEnhanced
                                     label={"Data de Nascimento"}
-                                    {...register("birth_date")}
+                                    {...register("birthDate")}
                                     isReq={true}
-                                    error={errors.birth_date}
+                                    error={errors.birthDate}
                                     placeholder="00/00/00"
                                     type="date"
                                     mask="defaultValue"
@@ -424,8 +417,8 @@ const Index = () => {
                             <Flex flexDir={"column"} width={"100%"}>
                                 <InputEnhanced
                                     isReq={true}
-                                    {...register("currency_hour")}
-                                    error={errors.currency_hour}
+                                    {...register("currencyHour")}
+                                    error={errors.currencyHour}
                                     label={"Valor por hora"}
                                     placeholder="R$ 2,99"
                                     mask="currency"
@@ -481,18 +474,13 @@ const Index = () => {
                         </Flex>
                         <Flex flexDir={"column"} width={"100%"}>
                             <InputEnhanced
-                                label={"Área de Atuação"}
-                                {...register("area_acting")}
+                                label={"Região de Atuação"}
+                                {...register("regionActing")}
                                 isReq={true}
                                 error={errors.street}
                                 placeholder="Ex: Zona Leste de São Paulo ou Ex: 00000-000 (Cep)"
                                 mask="defaultValue"
                             />
-                        </Flex>
-                        <Flex flexDir={"column"} width={"100%"} borderRadius={'lg'} overflow={'hidden'} mt={4}>
-                            <Flex>
-                                <iframe src={`https://www.google.com.br/maps?q=${selectedProfessional?.area_acting},%20Brasil&output=embed`} width="100%" height="290px" style={{ border: '0px' }} loading="lazy" />
-                            </Flex>
                         </Flex>
                     </Flex>
                     <Flex justifyContent={"flex-end"} gap={4} py={4}>
@@ -511,11 +499,11 @@ const Index = () => {
             image: yup.string(),
             cpf: yup.string().required("O campo CPF é obrigatório"),
             service: yup.string().required("O campo Modalidade de Atendimento é obrigatório"),
-            currency_hour: yup.string().required("O campo Valor por hora é obrigatório"),
-            register_cfm_crm: yup.string().required("O campo CFM / CRM é obrigatório"),
-            area_acting: yup.string().required("O campo Area de atuação é obrigatório"),
+            currencyHour: yup.string().required("O campo Valor por hora é obrigatório"),
+            registerCfmCrm: yup.string().required("O campo CFM / CRM é obrigatório"),
+            regionActing: yup.string().required("O campo Area de atuação é obrigatório"),
             rg: yup.string().required("O campo RG é obrigatório"),
-            birth_date: yup.string().required("O campo Data de Nascimento é obrigatório"),
+            birthDate: yup.string().required("O campo Data de Nascimento é obrigatório"),
             email: yup.string().test('emailOrPhoneRequired', 'Preencha o Email caso não possuir nenhum telefone', function (value) {
                 const { phone } = this.parent;
                 return !!(value || phone);
@@ -554,13 +542,13 @@ const Index = () => {
             }
         }
 
-        const handleUpdateProfessional = (e: Professional) => {
+        const handleUpdateProfessional = (e: { status: { toString: () => string; }; }) => {
             try {
                 const professionalToUpdate = professionals.find(professional => professional.id === selectedProfessional?.id);
                 const draft = {
                     ...e,
                     status: e?.status?.toString() === "true" ? true : false,
-                    image: fileImage ? fileImage : selectedProfessional?.image
+                    image: fileImage ? fileImage : selectedProfessional?.image!
                 }
                 if (professionalToUpdate) {
                     updateProfessional({ ...professionalToUpdate, ...draft });
@@ -646,7 +634,7 @@ const Index = () => {
                                     id="image"
                                     onChange={(e) => { handleFileChange(e) }}
                                 />
-                                <Button my={1} bgColor={'#1A936F'} width={'100%'} zIndex={0} p={0}>
+                                <Button type="button" my={1} bgColor={'#1A936F'} width={'100%'} zIndex={0} p={0} _hover={{ bgColor: "#10644B" }}>
                                     <label htmlFor="image" style={{
                                         justifyContent: 'center',
                                         alignItems: 'center',
@@ -700,10 +688,10 @@ const Index = () => {
                             <Flex flexDir={"column"} width={"100%"}>
                                 <InputEnhanced
                                     label={"CFM / CRM"}
-                                    {...register("register_cfm_crm")}
-                                    defaultValue={selectedProfessional?.register_cfm_crm}
+                                    {...register("registerCfmCrm")}
+                                    defaultValue={selectedProfessional?.registerCfmCrm}
                                     isReq={true}
-                                    error={errors.register_cfm_crm}
+                                    error={errors.registerCfmCrm}
                                     placeholder="ABL23984"
                                     mask="defaultValue"
                                     maxLength={8}
@@ -712,10 +700,10 @@ const Index = () => {
                             <Flex flexDir={"column"} width={"100%"}>
                                 <InputEnhanced
                                     label={"Data de Nascimento"}
-                                    {...register("birth_date")}
-                                    defaultValue={selectedProfessional?.birth_date}
+                                    {...register("birthDate")}
+                                    defaultValue={selectedProfessional?.birthDate}
                                     isReq={true}
-                                    error={errors.birth_date}
+                                    error={errors.birthDate}
                                     placeholder="00/00/00"
                                     type="date"
                                     mask="defaultValue"
@@ -851,9 +839,9 @@ const Index = () => {
                             <Flex flexDir={"column"} width={"100%"}>
                                 <InputEnhanced
                                     isReq={true}
-                                    {...register("currency_hour")}
-                                    defaultValue={selectedProfessional?.currency_hour}
-                                    error={errors.currency_hour}
+                                    {...register("currencyHour")}
+                                    defaultValue={selectedProfessional?.currencyHour}
+                                    error={errors.currencyHour}
                                     label={"Valor por hora"}
                                     placeholder="R$ 2,99"
                                     mask="currency"
@@ -912,9 +900,9 @@ const Index = () => {
                         </Flex>
                         <Flex flexDir={"column"} width={"100%"}>
                             <InputEnhanced
-                                label={"Área de Atuação"}
-                                {...register("area_acting")}
-                                defaultValue={selectedProfessional?.area_acting}
+                                label={"Região de Atuação"}
+                                {...register("regionActing")}
+                                defaultValue={selectedProfessional?.regionActing}
                                 isReq={true}
                                 error={errors.street}
                                 placeholder="Ex: Zona Leste de São Paulo ou Ex: 00000-000 (Cep)"
@@ -923,7 +911,7 @@ const Index = () => {
                         </Flex>
                         <Flex flexDir={"column"} width={"100%"} borderRadius={'lg'} overflow={'hidden'} mt={4}>
                             <Flex>
-                                <iframe src={`https://www.google.com.br/maps?q=${selectedProfessional?.area_acting},%20Brasil&output=embed`} width="100%" height="290px" style={{ border: '0px' }} loading="lazy" />
+                                <iframe src={`https://www.google.com.br/maps?q=${selectedProfessional?.regionActing},%20Brasil&output=embed`} width="100%" height="290px" style={{ border: '0px' }} loading="lazy" />
                             </Flex>
                         </Flex>
                     </Flex>
@@ -980,7 +968,7 @@ const Index = () => {
                         </Flex>
                         <Flex justifyContent={"flex-end"} gap={4} py={4}>
                             <Button colorScheme="red" onClick={() => { onCloseRemove() }}>Cancelar</Button>
-                            <Button type="submit" colorScheme="whatsapp">Confirmar</Button>
+                            <Button type="submit" bgColor={"#1A936F"} _hover={{ bgColor: "#10644B" }}>Confirmar</Button>
                         </Flex>
                     </FormControl>
                 </form>
@@ -1004,7 +992,7 @@ const Index = () => {
                     name: e?.name?.trim()
                 }
                 // @ts-ignore
-                getFilteredProfessionas(draft)
+                getProfessionasFiltered(draft)
             } catch (e) {
                 console.error(e)
             }
@@ -1084,11 +1072,11 @@ const Index = () => {
                 status
                     ?
                     <Box borderRadius={"100px"} p={1} bgColor={"#b1e9d0"} border={"1px solid #25a47c"} >
-                        <Text textAlign={"center"} fontSize={"12px"} color={"greenbrown"} fontWeight={"bold"} letterSpacing={"1.2px"}>Ativo</Text>
+                        <Text textAlign={"center"} fontSize={"12px"} color={"greenbrown"} fontWeight={"bold"}>Ativo</Text>
                     </Box>
                     :
                     <Box borderRadius={"100px"} p={1} bgColor={"#ffc9c9"} border={"1px solid #e01f1f"} >
-                        <Text textAlign={"center"} fontSize={"12px"} color={"#e01f1f"} fontWeight={"bold"} letterSpacing={"1.2px"}>Inativo</Text>
+                        <Text textAlign={"center"} fontSize={"12px"} color={"#762311"} fontWeight={"bold"}>Inativo</Text>
                     </Box>
             )
         }
@@ -1121,23 +1109,21 @@ const Index = () => {
                                     <Tr key={index}>
                                         <Td>{professional.name || 'Não Cadastrado'}</Td>
                                         <Td>{applyIsActive(professional.status) || 'Não Cadastrado'}</Td>
-                                        <Td>{professional.register_cfm_crm || 'Não Cadastrado'}</Td>
+                                        <Td>{professional.registerCfmCrm || 'Não Cadastrado'}</Td>
                                         <Td>{professional.cpf || 'Não Cadastrado'}</Td>
                                         <Td>{professional.specialty || 'Não Cadastrado'}</Td>
                                         <Td>{professional.email || 'Não Cadastrado'}</Td>
                                         <Td>{professional.phone || 'Não Cadastrado'}</Td>
                                         <Td>
                                             <Flex gap={4}>
-                                                <Link href={`${professional.id}`} target="_blank">
-                                                    <Tooltip placement="left" label={`Clique para visualizar o registro de ${name[0]}`} textAlign={"center"} p={2} bgColor={"black"} borderRadius={"lg"}>
-                                                        <Button colorScheme="whatsapp" onClick={() => {
-                                                            setSelectedProfessional(professional)
-                                                            console.log('teste')
-                                                        }}>
-                                                            <FaEye />
-                                                        </Button>
-                                                    </Tooltip>
-                                                </Link>
+                                                <Tooltip placement="left" label={`Clique para visualizar o registro de ${name[0]}`} textAlign={"center"} p={2} bgColor={"black"} borderRadius={"lg"}>
+                                                    <Button bgColor={"#1A936F"} _hover={{ bgColor: "#10644B" }} onClick={() => {
+                                                        setSelectedProfessional(professional)
+                                                        onOpenView()
+                                                    }}>
+                                                        <FaEye color="white" />
+                                                    </Button>
+                                                </Tooltip>
                                                 <Tooltip placement="left" label={`Clique para editar o registro de ${name[0]}`} textAlign={"center"} p={2} bgColor={"black"} borderRadius={"lg"}>
                                                     <Button colorScheme="linkedin" onClick={() => {
                                                         setFileImage('')
@@ -1176,8 +1162,9 @@ const Index = () => {
     return (
         <Flex gap={8} width={"100%"} flexDir={"column"} pt={5}>
             <ModalAddProfessional />
-            <ModalDeleteProfessional />
+            <ModalViewProfessional />
             <ModalUpdateProfessional />
+            <ModalDeleteProfessional />
             {/* Actions */}
             <Flex justifyContent={"space-between"} alignItems={"center"}>
                 <Flex flexDir={"column"}>
@@ -1190,10 +1177,10 @@ const Index = () => {
                 </Flex>
                 <Flex>
                     <Tooltip label={"Adicionar um novo profissional a plataforma"} placement={"left"} textAlign={"center"} p={2} bgColor={"black"} borderRadius={"lg"}>
-                        <Button leftIcon={<FaPlus />} bgColor={"#1A936F"} color={"white"} _hover={{ bgColor: "#10644B" }} variant="solid" onClick={() => { 
+                        <Button leftIcon={<FaPlus />} color={"white"} bgColor={"#1A936F"} _hover={{ bgColor: "#10644B" }} variant="solid" onClick={() => {
                             setFileImage('')
                             onOpenAdd()
-                         }}>
+                        }}>
                             Novo Profissional
                         </Button>
                     </Tooltip>

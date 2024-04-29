@@ -16,12 +16,10 @@ const Logo = () => {
 };
 
 const Index = () => {
-
     const currentYear = new Date().getFullYear();
-
     return (
         <Box
-            bg={"#301E1A"}
+            bg={"#10644B"}
             color={"white"}
             width={"100%"}
         >

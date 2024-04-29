@@ -3,7 +3,7 @@
 import { Flex, Text } from "@chakra-ui/react"
 import { Breadcrumb, ChartProfessionals, DashboardCard, TableProfessionals } from "../components"
 import { FaCalendarDay, FaCapsules, FaCheck, FaTimes } from "react-icons/fa"
-import { useProfessional } from "@/contexts/professionalsContext"
+import { useProfessional } from "@/contexts/professionals.context"
 import { useCallback } from "react"
 
 // Static, dont change
@@ -19,7 +19,7 @@ const BreadcrumbPath = [
 ]
 
 const Dashboard = () => {
-  const { professionals, getAllProfessionals, getByStatus, getByActualMonth, } = useProfessional()
+  const { professionals, getProfessionalsAll, getProfessionalsByStatus, getProfessionalsByCurrentMonth, } = useProfessional()
 
   const DashboardCards = useCallback(() => {
 
@@ -28,28 +28,28 @@ const Dashboard = () => {
         title: "Profissionais",
         tooltip: "Quantidade de profissionais cadastrados na plataforma.",
         color: "#1A936F",
-        quantity: getAllProfessionals(),
+        quantity: getProfessionalsAll(),
         icon: <FaCapsules color="white" />
       },
       {
-        title: "Registros Mensal",
+        title: "Registros Mensais",
         tooltip: "Quantidade de Profissionais cadastrados na plataforma este mês.",
         color: "#FFBBBE",
-        quantity: getByActualMonth(),
+        quantity: getProfessionalsByCurrentMonth(),
         icon: <FaCalendarDay color="white" />
       },
       {
         title: "Ativos",
         tooltip: "Quantidade de Profissionais cadastrados na plataforma com status igual a Ativo.",
         color: "#0EBDFF",
-        quantity: getByStatus(true),
+        quantity: getProfessionalsByStatus(true),
         icon: <FaCheck color="white" />
       },
       {
         title: "Inativos",
         tooltip: "Quantidade de Profissionais cadastrados na plataforma com status igual a Inativo.",
         color: "#F06D57",
-        quantity: getByStatus(false),
+        quantity: getProfessionalsByStatus(false),
         icon: <FaTimes color="white" />
       },
     ]

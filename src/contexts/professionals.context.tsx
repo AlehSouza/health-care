@@ -1,32 +1,8 @@
 "use client"
 
 import React, { ReactNode, createContext, useContext, useEffect, useState } from "react"
-import defaultDatabase from "./../services/defaultDatabase"
-
-interface Professional {
-    id?: number,
-    image?: string,
-    name?: string,
-    status?: boolean,
-    cpf?: string,
-    rg?: string,
-    birth_date?: string,
-    email?: string,
-    phone?: string,
-    address?: string,
-    street?: string,
-    number?: string,
-    neighborhood?: string,
-    currency_hour?: string,
-    service: string,
-    area_acting: string,
-    cep?: string,
-    uf?: string,
-    city?: string,
-    register_cfm_crm?: string,
-    specialty?: string,
-    created_at?: string,
-}
+import defaultDatabase from "../db/default.database"
+import { Professional } from "@/types/professional.type"
 
 interface ProfessionalContextType {
     professionals: Array<Professional>,
@@ -35,12 +11,12 @@ interface ProfessionalContextType {
     addProfessional: (newProfessional: Professional) => void,
     removeProfessional: (id: number) => void,
     updateProfessional: (updatedProfessional: Professional) => void,
-    getAllProfessionals: () => number,
-    getByStatus: (status: boolean) => number,
-    getByCpf: (cpf: string) => boolean | Professional[],
-    getByOccupation: (specialty: string) => number,
-    getByActualMonth: () => number,
-    getFilteredProfessionas: (name?: string, status?: boolean, specialty?: string) => void
+    getProfessionalsAll: () => number,
+    getProfessionalsByStatus: (status: boolean) => number,
+    getProfessionalByCpf: (cpf: string) => boolean | Professional[],
+    getProfessionalsBySpecialty: (specialty: string) => number,
+    getProfessionalsByCurrentMonth: () => number,
+    getProfessionasFiltered: (name?: string, status?: boolean, specialty?: string) => void
 }
 
 const ProfessionalContext = createContext<ProfessionalContextType | undefined>(undefined)
@@ -71,42 +47,42 @@ export function ProviderProfessional({ children }: { children: ReactNode }) {
         );
     }
 
-    const getAllProfessionals = () => {
+    const getProfessionalsAll = () => {
         return professionals.length
     }
 
-    const getByStatus = (status: boolean) => {
+    const getProfessionalsByStatus = (status: boolean) => {
         const draft = professionals.filter((professional) => professional.status === status || professional?.status?.toString() === `${status}`);
         return draft.length
     }
 
-    const getByCpf = (cpf: string) => {
+    const getProfessionalByCpf = (cpf: string) => {
         const draft = professionals.filter((professional) => professional.cpf?.replace(/[^\d]/g, '') === cpf.replace(/[^\d]/g, ''))
         return draft.length > 0 ? true : false
     };
 
-    const getByOccupation = (specialty: string) => {
+    const getProfessionalsBySpecialty = (specialty: string) => {
         const draft = professionals.filter((professional) => professional.specialty === specialty);
         return draft.length
     }
 
-    const getByActualMonth = () => {
-        const dataAtual = new Date();
-        const mesAtual = dataAtual.getMonth() + 1;
+    const getProfessionalsByCurrentMonth = () => {
+        const currentDate = new Date();
+        const currentMonth = currentDate.getMonth() + 1;
 
         const draft = professionals.filter((profissional) => {
             // Ignore because the date is saving like string not date
             // @ts-ignore
-            const dataCriacao = new Date(profissional?.created_at);
-            const mesCriacao = dataCriacao.getMonth() + 1;
+            const createdDate = new Date(profissional?.created_at);
+            const createdMonth = createdDate.getMonth() + 1;
 
-            return mesCriacao === mesAtual;
+            return createdMonth === currentMonth;
         });
 
         return draft.length
     }
 
-    const getFilteredProfessionas = (filters: any) => {
+    const getProfessionasFiltered = (filters: any) => {
         if (Object.keys(filters).length === 0) {
             return professionals;
         }
@@ -138,12 +114,12 @@ export function ProviderProfessional({ children }: { children: ReactNode }) {
                 addProfessional,
                 removeProfessional,
                 updateProfessional,
-                getAllProfessionals,
-                getByStatus,
-                getByCpf,
-                getByOccupation,
-                getByActualMonth,
-                getFilteredProfessionas
+                getProfessionalsAll,
+                getProfessionalsByStatus,
+                getProfessionalByCpf,
+                getProfessionalsBySpecialty,
+                getProfessionalsByCurrentMonth,
+                getProfessionasFiltered
             }}
         >
             {children}

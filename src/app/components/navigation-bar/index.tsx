@@ -19,7 +19,7 @@ import {
 } from "@chakra-ui/react";
 import { FaBars, FaCapsules, FaTimes } from "react-icons/fa";
 
-const Links = ["Dashboard", "Projects", "Team"];
+const Links = ["Dashboard"];
 
 const NavLink = ({ children }: { children: ReactNode }) => (
     <Link
@@ -44,7 +44,7 @@ const NavigationBar = () => {
             boxShadow={"lg"}
             p={1}
             px={16}
-            bg={"#301E1A"}
+            bg={"#10644B"}
             color={"#ffffff"}
         >
             <Flex h={16} alignItems={"center"} justifyContent={"space-between"} >
@@ -85,8 +85,8 @@ const NavigationBar = () => {
                                 src={"https://avatars.githubusercontent.com/u/43255955?v=4"}
                             />
                         </MenuButton>
-                        <MenuList color={"#301E1A"} fontWeight={"bold"} border={"0px"} pb={0} overflow={"hidden"} boxShadow={"lg"}>
-                            <MenuItem color={"#301E1A"} fontWeight={"bold"}>Configurações</MenuItem>
+                        <MenuList color={"#10644B"} fontWeight={"bold"} border={"0px"} pb={0} overflow={"hidden"} boxShadow={"lg"}>
+                            <MenuItem color={"black"} fontWeight={"bold"}>Configurações</MenuItem>
                             <MenuDivider mb={0} />
                             <Link href="/" style={{ textDecoration: "none" }}>
                                 <MenuItem bgColor={"#e64b40"} fontWeight={"bold"} p={3} color={"white"}>

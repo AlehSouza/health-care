@@ -4,72 +4,71 @@ import { Chart as ChartJS, ArcElement, Tooltip, Legend } from "chart.js";
 import { Doughnut } from "react-chartjs-2";
 import { Box, Card, CardHeader, Flex, Heading, IconButton, Tooltip as TooltipChakra, Text } from "@chakra-ui/react"
 import { FaChartPie, FaInfoCircle } from "react-icons/fa";
-import { useProfessional } from "@/contexts/professionalsContext";
+import { useProfessional } from "@/contexts/professionals.context";
 
 ChartJS.register(ArcElement, Tooltip, Legend);
 
 const Index = () => {
-
-    const { professionals, getByStatus, getByOccupation } = useProfessional()
+    const { getProfessionalsBySpecialty } = useProfessional()
 
     let data = [
         {
             label: "Ortopedista",
-            value: getByOccupation("Ortopedista"),
+            value: getProfessionalsBySpecialty("Ortopedista"),
             color: "#C52907",
             cutout: "50%",
         },
         {
             label: "Cirurgia Geral",
-            value: getByOccupation("Cirurgia Geral"),
+            value: getProfessionalsBySpecialty("Cirurgia Geral"),
             color: "#0EBDFF",
             cutout: "50%",
         },
         {
             label: "Clínica Médica",
-            value: getByOccupation("Clínica Médica"),
+            value: getProfessionalsBySpecialty("Clínica Médica"),
             color: "#F06D57",
             cutout: "50%",
         },
         {
             label: "Ginecologia e Obstetrícia",
-            value: getByOccupation("Ginecologia e Obstetrícia"),
+            value: getProfessionalsBySpecialty("Ginecologia e Obstetrícia"),
             color: "#FFBBBE",
             cutout: "50%",
         },
         {
             label: "Pediatria",
-            value: getByOccupation("Pediatria"),
+            value: getProfessionalsBySpecialty("Pediatria"),
             color: "#23D355",
             cutout: "50%",
         },
         {
             label: "Dermatologia",
-            value: getByOccupation("Dermatologia"),
+            value: getProfessionalsBySpecialty("Dermatologia"),
             color: "#FF9900",
             cutout: "50%",
         },
         {
             label: "Psiquiatria",
-            value: getByOccupation("Psiquiatria"),
+            value: getProfessionalsBySpecialty("Psiquiatria"),
             color: "#BA35E9",
             cutout: "50%",
         },
         {
             label: "Endocrinologia",
-            value: getByOccupation("Endocrinologia"),
+            value: getProfessionalsBySpecialty("Endocrinologia"),
             color: "#2B65F8",
             cutout: "50%",
         },
         {
             label: "Gastroenterologia",
-            value: getByOccupation("Gastroenterologia"),
+            value: getProfessionalsBySpecialty("Gastroenterologia"),
             color: "#80F847",
             cutout: "50%",
         },
         {
             label: "Medicina de Emergência",
-            value: getByOccupation("Medicina de Emergência"),
+            value: getProfessionalsBySpecialty("Medicina de Emergência"),
             color: "#F06D57",
             cutout: "50%",
         },
@@ -111,7 +110,7 @@ const Index = () => {
                             <FaChartPie color="white" />
                         </Box>
                         <Box>
-                            <Heading size="md">Profissionais Ativos e Inativos</Heading>
+                            <Heading size="md">Profissionais por especialidade</Heading>
                         </Box>
                     </Flex>
                     <TooltipChakra label={"Representação gráfica de Profissionais por área cadastrados na plataforma."} placement={"top"} textAlign={"center"} p={2} bgColor={"black"} borderRadius={"lg"}>

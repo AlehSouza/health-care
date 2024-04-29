@@ -1,7 +1,5 @@
-// app/layout.tsx
-
-import { ProviderProfessional } from "@/contexts/professionalsContext"
-import { ProviderChakra } from "@/providers/chakra"
+import { Providers } from "./providers"
+import './global.css'
 
 export default function RootLayout({
   children,
@@ -14,11 +12,9 @@ export default function RootLayout({
         <title>Umbaraco</title>
       </head>
       <body>
-        <ProviderChakra>
-          <ProviderProfessional>
-            {children}
-          </ProviderProfessional>
-        </ProviderChakra>
+        <Providers>
+          {children}
+        </Providers>
       </body>
     </html>
   )
