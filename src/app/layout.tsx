@@ -1,7 +1,7 @@
 // app/layout.tsx
 
-import { ProviderProfessional } from '@/contexts/professionalsContext'
-import { ProviderChakra } from '@/providers/chakra'
+import { ProviderProfessional } from "@/contexts/professionalsContext"
+import { ProviderChakra } from "@/providers/chakra"
 
 export default function RootLayout({
   children,
@@ -9,7 +9,7 @@ export default function RootLayout({
   children: React.ReactNode,
 }) {
   return (
-    <html lang='pt-BR'>
+    <html lang="pt-BR">
       <head>
         <title>Umbaraco</title>
       </head>

@@ -14,18 +14,18 @@ const Index = ({ title, color, icon, quantity, tooltip }: IDashboardCard) => {
     return (
         <Card
             width={{
-                base: '0em',
-                sm: '100%', 
-                md: '100%', 
-                lg: '100%', 
-                xl: '47%', 
-                '2xl': '48%',
+                base: "0em",
+                sm: "100%", 
+                md: "100%", 
+                lg: "100%", 
+                xl: "47%", 
+                "2xl": "48%",
             }}
             borderTop={`5px solid ${color}`}
         >
             <CardHeader>
-                <Flex alignItems={'center'}>
-                    <Flex flex='1' gap='4' alignItems='center' flexWrap='wrap'>
+                <Flex alignItems={"center"}>
+                    <Flex flex="1" gap="4" alignItems="center" flexWrap="wrap">
                         <Box
                             borderRadius={"100%"}
                             bgColor={color}
@@ -34,24 +34,24 @@ const Index = ({ title, color, icon, quantity, tooltip }: IDashboardCard) => {
                             {icon}
                         </Box>
                         <Box>
-                            <Heading size='md'>{title || title}</Heading>
+                            <Heading size="md">{title || title}</Heading>
                         </Box>
                     </Flex>
-                    <Tooltip label={tooltip} placement={'top'} textAlign={'center'} p={2} bgColor={'black'} borderRadius={'lg'}>
+                    <Tooltip label={tooltip} placement={"top"} textAlign={"center"} p={2} bgColor={"black"} borderRadius={"lg"}>
                         <IconButton
-                            variant='ghost'
-                            colorScheme='gray'
-                            aria-label='See menu'
-                            icon={<FaInfoCircle color={color} fontSize={'16px'} />}
+                            variant="ghost"
+                            colorScheme="gray"
+                            aria-label="See menu"
+                            icon={<FaInfoCircle color={color} fontSize={"16px"} />}
                         />
                     </Tooltip>
                 </Flex>
             </CardHeader>
-            <CardBody pt={5} display={'flex'} alignItems={'center'}>
-                <Text width={'100%'} fontWeight={'bold'} textAlign={'left'} pb={2}>
+            <CardBody pt={5} display={"flex"} alignItems={"center"}>
+                <Text width={"100%"} fontWeight={"bold"} textAlign={"left"} pb={2}>
                     Qtd. de Registros
                 </Text>
-                <Text fontSize={'36px'} width={'100%'} textAlign={'right'}>
+                <Text fontSize={"36px"} width={"100%"} textAlign={"right"}>
                     {quantity}
                 </Text>
             </CardBody>

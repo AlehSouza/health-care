@@ -8,12 +8,12 @@ type IProps = {
 const DashboardLayout = ({ children }: IProps) => {
     return (
         <Flex
-            justifyContent={'center'}
-            alignItems={'center'}
-            flexDir={'column'}
+            justifyContent={"center"}
+            alignItems={"center"}
+            flexDir={"column"}
         >
             <NavigationBar />
-            <Box width={'100%'}>
+            <Box width={"100%"}>
                 {children}
             </Box>
             <Footer />

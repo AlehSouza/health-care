@@ -3,25 +3,73 @@ import React from "react";
 import { Chart as ChartJS, ArcElement, Tooltip, Legend } from "chart.js";
 import { Doughnut } from "react-chartjs-2";
 import { Box, Card, CardHeader, Flex, Heading, IconButton, Tooltip as TooltipChakra, Text } from "@chakra-ui/react"
-import { FaCapsules, FaInfoCircle } from "react-icons/fa";
+import { FaChartPie, FaInfoCircle } from "react-icons/fa";
 import { useProfessional } from "@/contexts/professionalsContext";
 
 ChartJS.register(ArcElement, Tooltip, Legend);
 
 const Index = () => {
 
-    const { professionals, getByStatus } = useProfessional()
+    const { professionals, getByStatus, getByOccupation } = useProfessional()
 
     let data = [
         {
-            label: "Ativos",
-            value: getByStatus(true),
+            label: "Ortopedista",
+            value: getByOccupation("Ortopedista"),
+            color: "#C52907",
+            cutout: "50%",
+        },
+        {
+            label: "Cirurgia Geral",
+            value: getByOccupation("Cirurgia Geral"),
             color: "#0EBDFF",
             cutout: "50%",
         },
         {
-            label: "Inativos",
-            value: getByStatus(false),
+            label: "Clínica Médica",
+            value: getByOccupation("Clínica Médica"),
+            color: "#F06D57",
+            cutout: "50%",
+        },
+        {
+            label: "Ginecologia e Obstetrícia",
+            value: getByOccupation("Ginecologia e Obstetrícia"),
+            color: "#FFBBBE",
+            cutout: "50%",
+        },
+        {
+            label: "Pediatria",
+            value: getByOccupation("Pediatria"),
+            color: "#23D355",
+            cutout: "50%",
+        },
+        {
+            label: "Dermatologia",
+            value: getByOccupation("Dermatologia"),
+            color: "#FF9900",
+            cutout: "50%",
+        },
+        {
+            label: "Psiquiatria",
+            value: getByOccupation("Psiquiatria"),
+            color: "#BA35E9",
+            cutout: "50%",
+        },
+        {
+            label: "Endocrinologia",
+            value: getByOccupation("Endocrinologia"),
+            color: "#2B65F8",
+            cutout: "50%",
+        },
+        {
+            label: "Gastroenterologia",
+            value: getByOccupation("Gastroenterologia"),
+            color: "#80F847",
+            cutout: "50%",
+        },
+        {
+            label: "Medicina de Emergência",
+            value: getByOccupation("Medicina de Emergência"),
             color: "#F06D57",
             cutout: "50%",
         },
@@ -30,6 +78,9 @@ const Index = () => {
     const options: any = {
         plugins: {
             responsive: true,
+            legend: {
+                display: false,
+            }
         },
         cutout: data.map((item) => item.cutout),
     };
@@ -48,34 +99,48 @@ const Index = () => {
     };
 
     return (
-        <Card w={'100%'} borderTop={'5px solid #FF9900'}>
+        <Card w={"100%"} borderTop={"5px solid #FF9900"}>
             <CardHeader>
-                <Flex alignItems={'center'}>
-                    <Flex flex='1' gap='4' alignItems='center' flexWrap='wrap'>
+                <Flex alignItems={"center"}>
+                    <Flex flex="1" gap="4" alignItems="center" flexWrap="wrap">
                         <Box
                             borderRadius={"100%"}
-                            bgColor={'#FF9900'}
+                            bgColor={"#FF9900"}
                             p={4}
                         >
-                            <FaCapsules color="white" />
+                            <FaChartPie color="white" />
                         </Box>
                         <Box>
-                            <Heading size='md'>Profissionais Ativos e Inativos</Heading>
+                            <Heading size="md">Profissionais Ativos e Inativos</Heading>
                         </Box>
                     </Flex>
-                    <TooltipChakra label={'Gráfico mostrando % de profissionais ativos e inativos na plataforma'} placement={'top'} textAlign={'center'} p={2} bgColor={'black'} borderRadius={'lg'}>
+                    <TooltipChakra label={"Representação gráfica de Profissionais Ativos e Inativos cadastrados na plataforma."} placement={"top"} textAlign={"center"} p={2} bgColor={"black"} borderRadius={"lg"}>
                         <IconButton
-                            variant='ghost'
-                            colorScheme='gray'
-                            aria-label='See menu'
-                            icon={<FaInfoCircle color={'#FF9900'} fontSize={'16px'} />}
+                            variant="ghost"
+                            colorScheme="gray"
+                            aria-label="See menu"
+                            icon={<FaInfoCircle color={"#FF9900"} fontSize={"16px"} />}
                         />
                     </TooltipChakra>
                 </Flex>
             </CardHeader>
-            <Flex w={'100%'} h={'100%'} alignItems={'center'} justifyContent={'center'} flexDir={'column'} >
-                <Flex h={'320px'} pb={8}>
-                    <Doughnut data={finalData} options={options}/>
+            <Flex w={"100%"} h={"100%"} alignItems={"center"} justifyContent={"center"} flexDir={"column"} >
+                <Flex h={"320px"} pb={8} alignItems={"center"}>
+                    <Doughnut data={finalData} options={options} />
+                    <Flex flexDir={"column"} pl={8}>
+                        {
+                            data.map((occupation, index) => {
+                                return (
+                                    <TooltipChakra key={index} label={`Cadastrados: ${occupation.value}`} placement={"bottom"} textAlign={"center"} p={2} bgColor={"black"} borderRadius={"lg"}>
+                                        <Flex alignItems={"center"} gap={2} pb={1} >
+                                            <Box width={"12px"} height={"12px"} bgColor={occupation.color} borderRadius={"100px"} />
+                                            <Text fontSize={"14px"}>{occupation.label}</Text>
+                                        </Flex>
+                                    </TooltipChakra>
+                                )
+                            })
+                        }
+                    </Flex>
                 </Flex>
             </Flex>
         </Card>

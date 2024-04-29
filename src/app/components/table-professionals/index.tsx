@@ -1,8 +1,8 @@
-'use client'
+"use client"
 
 import { Box, Button, Card, Flex, FormControl, FormLabel, Input, Select, Table, TableCaption, Tbody, Td, Text, Th, Thead, Tooltip, Tr, useDisclosure, useToast } from "@chakra-ui/react"
 import { FaExclamationTriangle, FaPen, FaPlus, FaSearch, FaTrash } from "react-icons/fa"
-import { useForm } from 'react-hook-form';
+import { useForm } from "react-hook-form";
 import { Modal } from "..";
 import { useCallback, useState } from "react";
 import { useProfessional } from "@/contexts/professionalsContext";
@@ -28,7 +28,7 @@ interface Professional {
 }
 
 const Index = () => {
-    const { professionals, addProfessional, removeProfessional, updateProfessional } = useProfessional()
+    const { professionals, filteredProfessionals, addProfessional, removeProfessional, updateProfessional, getFilteredProfessionas } = useProfessional()
     const [selectedProfessional, setSelectedProfessional] = useState<Professional>()
     const toast = useToast()
 
@@ -79,22 +79,22 @@ const Index = () => {
             try {
                 addProfessional(draft)
                 toast({
-                    title: 'Sucesso',
+                    title: "Sucesso",
                     description: "Um novo Profissional foi cadastrado.",
-                    status: 'success',
+                    status: "success",
                     duration: 9000,
                     isClosable: true,
-                    position: 'top-right'
+                    position: "top-right"
                 })
             } catch (e) {
                 console.error(e)
                 toast({
-                    title: 'Erro',
+                    title: "Erro",
                     description: "Sentimos muito, não foi possível concluir a sua ação, já estamos trabalhando nisso",
-                    status: 'error',
+                    status: "error",
                     duration: 9000,
                     isClosable: true,
-                    position: 'top-right'
+                    position: "top-right"
                 })
             } finally {
                 onCloseAdd()
@@ -103,102 +103,102 @@ const Index = () => {
         }
 
         return (
-            <Modal color={'#1A936F'} onClose={onCloseAdd} isOpen={isOpenAdd} title="Cadastrar novo profissional">
+            <Modal color={"#1A936F"} onClose={onCloseAdd} isOpen={isOpenAdd} title="Cadastrar novo profissional">
                 <form onSubmit={handleSubmit(onSubmit)}>
                     <FormControl isRequired>
-                        <Flex flexDir={'column'}>
-                            <Flex flexDir={'column'}>
+                        <Flex flexDir={"column"}>
+                            <Flex flexDir={"column"}>
                                 <FormLabel fontSize={"14px"} pt={2}>Nome</FormLabel>
                                 <Input
-                                    {...register('name')}
+                                    {...register("name")}
                                     placeholder="Examplo: João da Silva"
-                                    width={'100%'}
-                                    textTransform={'capitalize'}
+                                    width={"100%"}
+                                    textTransform={"capitalize"}
                                 />
                             </Flex>
 
                             <Flex gap={4}>
-                                <Flex flexDir={'column'} width={'100%'}>
+                                <Flex flexDir={"column"} width={"100%"}>
                                     <FormLabel fontSize={"14px"} pt={2}>CPF</FormLabel>
                                     <Input
-                                        {...register('cpf')}
+                                        {...register("cpf")}
                                         placeholder="000.000.000-00"
                                     />
                                 </Flex>
-                                <Flex flexDir={'column'} width={'100%'}>
+                                <Flex flexDir={"column"} width={"100%"}>
                                     <FormLabel fontSize={"14px"} pt={2}>CFM</FormLabel>
                                     <Input
-                                        {...register('cfm')}
+                                        {...register("cfm")}
                                         placeholder="000000"
                                     />
                                 </Flex>
                             </Flex>
 
                             <Flex gap={4}>
-                                <Flex flexDir={'column'} width={'100%'}>
+                                <Flex flexDir={"column"} width={"100%"}>
                                     <FormLabel fontSize={"14px"} pt={2}>RG</FormLabel>
                                     <Input
-                                        {...register('rg')}
+                                        {...register("rg")}
                                         placeholder="0000-0000-0"
                                     />
                                 </Flex>
-                                <Flex flexDir={'column'} width={'100%'}>
+                                <Flex flexDir={"column"} width={"100%"}>
                                     <FormLabel fontSize={"14px"} pt={2}>Data de nascimento</FormLabel>
                                     <Input
-                                        {...register('birth_date')}
+                                        {...register("birth_date")}
                                         placeholder="00/00/00"
                                         type="date"
                                     />
                                 </Flex>
                             </Flex>
 
-                            <Flex flexDir={'column'}>
+                            <Flex flexDir={"column"}>
                                 <FormLabel fontSize={"14px"} pt={2}>Email</FormLabel>
                                 <Input
-                                    {...register('email')}
+                                    {...register("email")}
                                     placeholder="example@umbaraco.com.br"
-                                    width={'100%'}
+                                    width={"100%"}
                                 />
                             </Flex>
 
                             <Flex gap={4}>
-                                <Flex flexDir={'column'} width={'100%'}>
+                                <Flex flexDir={"column"} width={"100%"}>
                                     <FormLabel fontSize={"14px"} pt={2}>Telefone</FormLabel>
                                     <Input
-                                        {...register('phone')}
+                                        {...register("phone")}
                                         placeholder="(11) 99999-9999"
                                     />
                                 </Flex>
-                                <Flex flexDir={'column'} width={'100%'}>
+                                <Flex flexDir={"column"} width={"100%"}>
                                     <FormLabel fontSize={"14px"} pt={2}>CEP</FormLabel>
                                     <Input
-                                        {...register('cep')}
+                                        {...register("cep")}
                                         placeholder="00000-000"
                                     />
                                 </Flex>
                             </Flex>
 
                             <Flex gap={4}>
-                                <Flex flexDir={'column'} width={'100%'}>
+                                <Flex flexDir={"column"} width={"100%"}>
                                     <FormLabel fontSize={"14px"} pt={2}>Rua</FormLabel>
                                     <Input
-                                        {...register('street')}
+                                        {...register("street")}
                                         placeholder="Av. Paulista"
                                     />
                                 </Flex>
                             </Flex>
 
                             <Flex gap={4}>
-                                <Flex flexDir={'column'} width={'100%'}>
+                                <Flex flexDir={"column"} width={"100%"}>
                                     <FormLabel fontSize={"14px"} pt={2}>Número</FormLabel>
                                     <Input
-                                        {...register('number')}
+                                        {...register("number")}
                                         placeholder="123"
                                     />
                                 </Flex>
-                                <Flex flexDir={'column'} width={'100%'}>
+                                <Flex flexDir={"column"} width={"100%"}>
                                     <FormLabel fontSize={"14px"} pt={2}>UF</FormLabel>
-                                    <Select {...register('uf')} id="estado" name="estado">
+                                    <Select {...register("uf")} id="estado" name="estado">
                                         <option value="AC">Acre</option>
                                         <option value="AL">Alagoas</option>
                                         <option value="AP">Amapá</option>
@@ -229,37 +229,39 @@ const Index = () => {
                                         <option value="EX">Estrangeiro</option>
                                     </Select>
                                 </Flex>
-                                <Flex flexDir={'column'} width={'100%'}>
+                                <Flex flexDir={"column"} width={"100%"}>
                                     <FormLabel fontSize={"14px"} pt={2}>Cidade</FormLabel>
                                     <Input
-                                        {...register('city')}
+                                        {...register("city")}
                                         placeholder="São Paulo"
                                     />
                                 </Flex>
                             </Flex>
 
                             <Flex gap={4}>
-                                <Flex flexDir={'column'} width={'100%'}>
+                                <Flex flexDir={"column"} width={"100%"}>
                                     <FormLabel fontSize={"14px"} pt={2}>Ocupação</FormLabel>
                                     <Select
-                                        {...register('occupation')}
+                                        {...register("occupation")}
                                         placeholder="Selecione..."
                                     >
                                         <option value="Cirurgia Geral">Cirurgia Geral</option>
                                         <option value="Clínica Médica">Clínica Médica</option>
                                         <option value="Ginecologia e Obstetrícia">Ginecologia e Obstetrícia</option>
+                                        <option value="Ortopedista">Ortopedista</option>
                                         <option value="Pediatria">Pediatria</option>
                                         <option value="Dermatologia">Dermatologia</option>
                                         <option value="Psiquiatria">Psiquiatria</option>
                                         <option value="Endocrinologia">Endocrinologia</option>
                                         <option value="Gastroenterologia">Gastroenterologia</option>
                                         <option value="Medicina de Emergência">Medicina de Emergência</option>
+
                                     </Select>
                                 </Flex>
-                                <Flex flexDir={'column'} width={'100%'}>
+                                <Flex flexDir={"column"} width={"100%"}>
                                     <FormLabel fontSize={"14px"} pt={2}>Status</FormLabel>
                                     <Select
-                                        {...register('status')}
+                                        {...register("status")}
                                         placeholder="Selecione..."
                                     >
                                         <option value="true">Ativo</option>
@@ -268,7 +270,7 @@ const Index = () => {
                                 </Flex>
                             </Flex>
                         </Flex>
-                        <Flex justifyContent={'flex-end'} gap={4} py={4}>
+                        <Flex justifyContent={"flex-end"} gap={4} py={4}>
                             <Button onClick={() => { onCloseAdd() }}>Cancelar</Button>
                             <Button type="submit">Cadastrar</Button>
                         </Flex>
@@ -296,14 +298,14 @@ const Index = () => {
         }
 
         return (
-            <Modal color={'#FF9900'} onClose={onCloseRemove} isOpen={isOpenRemove} title="Atenção">
+            <Modal color={"#FF9900"} onClose={onCloseRemove} isOpen={isOpenRemove} title="Atenção">
                 <form onSubmit={handleSubmit(handleRemoveProfessional)}>
                     <FormControl isRequired>
-                        <Flex flexDir={'column'} textAlign={'center'} py={6} fontSize={'18px'} flexDirection={'column'} justifyContent={'center'} alignItems={'center'}>
-                            <FaExclamationTriangle fontSize={'38px'} style={{ margin: '18px 0px' }} color="#FF9900" />
-                            <Text fontWeight={'bold'}>Tem certeza que deseja deletar este usuário?</Text>
+                        <Flex flexDir={"column"} textAlign={"center"} py={6} fontSize={"18px"} flexDirection={"column"} justifyContent={"center"} alignItems={"center"}>
+                            <FaExclamationTriangle fontSize={"38px"} style={{ margin: "18px 0px" }} color="#FF9900" />
+                            <Text fontWeight={"bold"}>Tem certeza que deseja deletar este usuário?</Text>
                         </Flex>
-                        <Flex justifyContent={'flex-end'} gap={4} py={4}>
+                        <Flex justifyContent={"flex-end"} gap={4} py={4}>
                             <Button colorScheme="red" onClick={() => { onCloseRemove() }}>Cancelar</Button>
                             <Button type="submit" colorScheme="whatsapp">Confirmar</Button>
                         </Flex>
@@ -331,34 +333,34 @@ const Index = () => {
         }
 
         return (
-            <Modal color={'#1A936F'} onClose={onCloseUpdate} isOpen={isOpenUpdate} title="Editando um profissional">
+            <Modal color={"#1A936F"} onClose={onCloseUpdate} isOpen={isOpenUpdate} title="Editando um profissional">
                 <form onSubmit={handleSubmit(handleUpdateProfessional)}>
                     <FormControl isRequired>
-                        <Flex flexDir={'column'}>
-                            <Flex flexDir={'column'}>
+                        <Flex flexDir={"column"}>
+                            <Flex flexDir={"column"}>
                                 <FormLabel fontSize={"14px"} pt={2}>Nome</FormLabel>
                                 <Input
-                                    {...register('name')}
+                                    {...register("name")}
                                     defaultValue={selectedProfessional?.name}
                                     placeholder="Examplo: João da Silva"
-                                    width={'100%'}
-                                    textTransform={'capitalize'}
+                                    width={"100%"}
+                                    textTransform={"capitalize"}
                                 />
                             </Flex>
 
                             <Flex gap={4}>
-                                <Flex flexDir={'column'} width={'100%'}>
+                                <Flex flexDir={"column"} width={"100%"}>
                                     <FormLabel fontSize={"14px"} pt={2}>CPF</FormLabel>
                                     <Input
-                                        {...register('cpf')}
+                                        {...register("cpf")}
                                         defaultValue={selectedProfessional?.cpf}
                                         placeholder="000.000.000-00"
                                     />
                                 </Flex>
-                                <Flex flexDir={'column'} width={'100%'}>
+                                <Flex flexDir={"column"} width={"100%"}>
                                     <FormLabel fontSize={"14px"} pt={2}>CFM</FormLabel>
                                     <Input
-                                        {...register('cfm')}
+                                        {...register("cfm")}
                                         defaultValue={selectedProfessional?.cfm}
                                         placeholder="000000"
                                     />
@@ -366,18 +368,18 @@ const Index = () => {
                             </Flex>
 
                             <Flex gap={4}>
-                                <Flex flexDir={'column'} width={'100%'}>
+                                <Flex flexDir={"column"} width={"100%"}>
                                     <FormLabel fontSize={"14px"} pt={2}>RG</FormLabel>
                                     <Input
-                                        {...register('rg')}
+                                        {...register("rg")}
                                         defaultValue={selectedProfessional?.rg}
                                         placeholder="0000-0000-0"
                                     />
                                 </Flex>
-                                <Flex flexDir={'column'} width={'100%'}>
+                                <Flex flexDir={"column"} width={"100%"}>
                                     <FormLabel fontSize={"14px"} pt={2}>Data de nascimento</FormLabel>
                                     <Input
-                                        {...register('birth_date')}
+                                        {...register("birth_date")}
                                         defaultValue={selectedProfessional?.birth_date}
                                         placeholder="00/00/00"
                                         type="date"
@@ -385,29 +387,29 @@ const Index = () => {
                                 </Flex>
                             </Flex>
 
-                            <Flex flexDir={'column'}>
+                            <Flex flexDir={"column"}>
                                 <FormLabel fontSize={"14px"} pt={2}>Email</FormLabel>
                                 <Input
-                                    {...register('email')}
+                                    {...register("email")}
                                     defaultValue={selectedProfessional?.email}
                                     placeholder="example@umbaraco.com.br"
-                                    width={'100%'}
+                                    width={"100%"}
                                 />
                             </Flex>
 
                             <Flex gap={4}>
-                                <Flex flexDir={'column'} width={'100%'}>
+                                <Flex flexDir={"column"} width={"100%"}>
                                     <FormLabel fontSize={"14px"} pt={2}>Telefone</FormLabel>
                                     <Input
-                                        {...register('phone')}
+                                        {...register("phone")}
                                         defaultValue={selectedProfessional?.phone}
                                         placeholder="(11) 99999-9999"
                                     />
                                 </Flex>
-                                <Flex flexDir={'column'} width={'100%'}>
+                                <Flex flexDir={"column"} width={"100%"}>
                                     <FormLabel fontSize={"14px"} pt={2}>CEP</FormLabel>
                                     <Input
-                                        {...register('cep')}
+                                        {...register("cep")}
                                         defaultValue={selectedProfessional?.cep}
                                         placeholder="00000-000"
                                     />
@@ -415,10 +417,10 @@ const Index = () => {
                             </Flex>
 
                             <Flex gap={4}>
-                                <Flex flexDir={'column'} width={'100%'}>
+                                <Flex flexDir={"column"} width={"100%"}>
                                     <FormLabel fontSize={"14px"} pt={2}>Rua</FormLabel>
                                     <Input
-                                        {...register('street')}
+                                        {...register("street")}
                                         defaultValue={selectedProfessional?.street}
                                         placeholder="Av. Paulista"
                                     />
@@ -426,18 +428,18 @@ const Index = () => {
                             </Flex>
 
                             <Flex gap={4}>
-                                <Flex flexDir={'column'} width={'100%'}>
+                                <Flex flexDir={"column"} width={"100%"}>
                                     <FormLabel fontSize={"14px"} pt={2}>Número</FormLabel>
                                     <Input
-                                        {...register('number')}
+                                        {...register("number")}
                                         defaultValue={selectedProfessional?.number}
                                         placeholder="123"
                                     />
                                 </Flex>
-                                <Flex flexDir={'column'} width={'100%'}>
+                                <Flex flexDir={"column"} width={"100%"}>
                                     <FormLabel fontSize={"14px"} pt={2}>UF</FormLabel>
                                     <Select
-                                        {...register('uf')}
+                                        {...register("uf")}
                                         defaultValue={selectedProfessional?.uf}
                                         placeholder="Selecione..."
                                     >
@@ -471,10 +473,10 @@ const Index = () => {
                                         <option value="EX">Estrangeiro</option>
                                     </Select>
                                 </Flex>
-                                <Flex flexDir={'column'} width={'100%'}>
+                                <Flex flexDir={"column"} width={"100%"}>
                                     <FormLabel fontSize={"14px"} pt={2}>Cidade</FormLabel>
                                     <Input
-                                        {...register('city')}
+                                        {...register("city")}
                                         defaultValue={selectedProfessional?.city}
                                         placeholder="São Paulo"
                                     />
@@ -482,16 +484,17 @@ const Index = () => {
                             </Flex>
 
                             <Flex gap={4}>
-                                <Flex flexDir={'column'} width={'100%'}>
+                                <Flex flexDir={"column"} width={"100%"}>
                                     <FormLabel fontSize={"14px"} pt={2}>Ocupação</FormLabel>
                                     <Select
-                                        {...register('occupation')}
+                                        {...register("occupation")}
                                         defaultValue={selectedProfessional?.occupation}
                                         placeholder="Selecione..."
                                     >
                                         <option value="Cirurgia Geral">Cirurgia Geral</option>
                                         <option value="Clínica Médica">Clínica Médica</option>
                                         <option value="Ginecologia e Obstetrícia">Ginecologia e Obstetrícia</option>
+                                        <option value="Ortopedista">Ortopedista</option>
                                         <option value="Pediatria">Pediatria</option>
                                         <option value="Dermatologia">Dermatologia</option>
                                         <option value="Psiquiatria">Psiquiatria</option>
@@ -500,10 +503,10 @@ const Index = () => {
                                         <option value="Medicina de Emergência">Medicina de Emergência</option>
                                     </Select>
                                 </Flex>
-                                <Flex flexDir={'column'} width={'100%'}>
+                                <Flex flexDir={"column"} width={"100%"}>
                                     <FormLabel fontSize={"14px"} pt={2}>Status</FormLabel>
                                     <Select
-                                        {...register('status')}
+                                        {...register("status")}
                                         defaultValue={`${selectedProfessional?.status}`}
                                         placeholder="Selecione..."
                                     >
@@ -513,7 +516,7 @@ const Index = () => {
                                 </Flex>
                             </Flex>
                         </Flex>
-                        <Flex justifyContent={'flex-end'} gap={4} py={4}>
+                        <Flex justifyContent={"flex-end"} gap={4} py={4}>
                             <Button onClick={() => { onCloseUpdate() }} colorScheme="red">Cancelar</Button>
                             <Button type="submit" colorScheme="whatsapp">Atualizar Dados</Button>
                         </Flex>
@@ -525,63 +528,89 @@ const Index = () => {
 
     // Search
     const TableSearchProfessionals = () => {
+        const {
+            register,
+            reset,
+            handleSubmit,
+            formState: { errors },
+        } = useForm({ mode: "onChange" })
+
+        const onSubmit = (e?: { name?: string; }) => {
+            try {
+                const draft = {
+                    ...e,
+                    name: e?.name?.trim()
+                }
+                // @ts-ignore
+                getFilteredProfessionas(draft)
+            } catch (e) {
+                console.error(e)
+            }
+        }
+
         return (
-            <Flex width={"100%"} p={4} alignItems={"flex-end"} justifyContent={"space-between"} bgColor={"#1A936F"}>
-                <Flex width={"80%"} gap={4}>
-                    <Flex
-                        flexDir={"column"}
-                        w={"60%"}
-                    >
-                        <FormControl isRequired>
-                            <FormLabel fontSize={"14px"} color={"white"}>Dados do usuário cadastrado</FormLabel>
-                            <Input placeholder="Example: Eleonor Rigby" bgColor={"white"} />
-                        </FormControl>
+            <form onSubmit={handleSubmit(onSubmit)}>
+                <Flex width={"100%"} p={4} alignItems={"flex-end"} justifyContent={"space-between"} bgColor={"#1A936F"}>
+                    <Flex width={"80%"} gap={4}>
+                        <Flex
+                            flexDir={"column"}
+                            w={"60%"}
+                        >
+                            <FormControl>
+                                <FormLabel fontSize={"14px"} color={"white"}>Dados do usuário cadastrado</FormLabel>
+                                <Input {...register("name")} placeholder="John Doe" bgColor={"white"} />
+                            </FormControl>
+                        </Flex>
+                        <Flex
+                            flexDir={"column"}
+                            w={"20%"}
+                        >
+                            <FormControl>
+                                <FormLabel fontSize={"14px"} color={"white"}>Status</FormLabel>
+                                <Select {...register("status")} placeholder="Selecione..." bgColor={"white"} >
+                                    <option value={"true"}>Ativo</option>
+                                    <option value={"false"}>Inativo</option>
+                                </Select>
+                            </FormControl>
+                        </Flex>
+                        <Flex
+                            flexDir={"column"}
+                            w={"20%"}
+                        >
+                            <FormControl>
+                                <FormLabel fontSize={"14px"} color={"white"}>Ocupação</FormLabel>
+                                <Select {...register("occupation")} placeholder="Selecione..." bgColor={"white"}>
+                                    <option value="Cirurgia Geral">Cirurgia Geral</option>
+                                    <option value="Clínica Médica">Clínica Médica</option>
+                                    <option value="Ginecologia e Obstetrícia">Ginecologia e Obstetrícia</option>
+                                    <option value="Ortopedista">Ortopedista</option>
+                                    <option value="Pediatria">Pediatria</option>
+                                    <option value="Dermatologia">Dermatologia</option>
+                                    <option value="Psiquiatria">Psiquiatria</option>
+                                    <option value="Endocrinologia">Endocrinologia</option>
+                                    <option value="Gastroenterologia">Gastroenterologia</option>
+                                    <option value="Medicina de Emergência">Medicina de Emergência</option>
+                                </Select>
+                            </FormControl>
+                        </Flex>
                     </Flex>
-                    <Flex
-                        flexDir={"column"}
-                        w={"20%"}
-                    >
-                        <FormControl isRequired>
-                            <FormLabel fontSize={"14px"} color={"white"}>Status</FormLabel>
-                            <Select placeholder="Selecione..." bgColor={"white"} >
-                                <option value={"true"}>Ativo</option>
-                                <option value={"false"}>Inativo</option>
-                            </Select>
-                        </FormControl>
-                    </Flex>
-                    <Flex
-                        flexDir={"column"}
-                        w={"20%"}
-                    >
-                        <FormControl isRequired>
-                            <FormLabel fontSize={"14px"} color={"white"}>Ocupação</FormLabel>
-                            <Select placeholder="Selecione..." bgColor={"white"}>
-                                <option value="Cirurgia Geral">Cirurgia Geral</option>
-                                <option value="Clínica Médica">Clínica Médica</option>
-                                <option value="Ginecologia e Obstetrícia">Ginecologia e Obstetrícia</option>
-                                <option value="Pediatria">Pediatria</option>
-                                <option value="Dermatologia">Dermatologia</option>
-                                <option value="Psiquiatria">Psiquiatria</option>
-                                <option value="Endocrinologia">Endocrinologia</option>
-                                <option value="Gastroenterologia">Gastroenterologia</option>
-                                <option value="Medicina de Emergência">Medicina de Emergência</option>
-                            </Select>
-                        </FormControl>
+                    <Flex gap={4}>
+                        <Tooltip label={"Limpar parametros da pesquisa"} placement={"left"} textAlign={"center"} p={2} bgColor={"black"} borderRadius={"lg"}>
+                            <Button onClick={() => {
+                                reset()
+                                onSubmit()
+                            }}>
+                                Limpar
+                            </Button>
+                        </Tooltip>
+                        <Tooltip label={"Efetuar a busca"} placement={"left"} textAlign={"center"} p={2} bgColor={"black"} borderRadius={"lg"}>
+                            <Button type="submit" colorScheme="linkedin">
+                                <FaSearch color="white" />
+                            </Button>
+                        </Tooltip>
                     </Flex>
                 </Flex>
-                <Flex gap={4}>
-                    <Tooltip label={'Limpar parametros de busca'} placement={'left'} textAlign={'center'} p={2} bgColor={'black'} borderRadius={'lg'}>
-                        <Button variant={'ghost'} >
-                            Limpar
-                        </Button>
-                    </Tooltip>
-                    <Tooltip label={'Efetuar a busca'} placement={'left'} textAlign={'center'} p={2} bgColor={'black'} borderRadius={'lg'}>
-                        <Button colorScheme="linkedin">
-                            <FaSearch color="white" />
-                        </Button>
-                    </Tooltip>
-                </Flex>
-            </Flex>
+            </form>
         )
     }
 
@@ -592,18 +621,18 @@ const Index = () => {
             return (
                 status
                     ?
-                    <Box borderRadius={'100px'} p={1} bgColor={'#b1e9d0'} border={'1px solid #25a47c'} >
-                        <Text textAlign={'center'} fontSize={'12px'} color={'greenbrown'} fontWeight={'bold'} letterSpacing={'1.2px'}>Ativo</Text>
+                    <Box borderRadius={"100px"} p={1} bgColor={"#b1e9d0"} border={"1px solid #25a47c"} >
+                        <Text textAlign={"center"} fontSize={"12px"} color={"greenbrown"} fontWeight={"bold"} letterSpacing={"1.2px"}>Ativo</Text>
                     </Box>
                     :
-                    <Box borderRadius={'100px'} p={1} bgColor={'#ffc9c9'} border={'1px solid #e01f1f'} >
-                        <Text textAlign={'center'} fontSize={'12px'} color={'#e01f1f'} fontWeight={'bold'} letterSpacing={'1.2px'}>Inativo</Text>
+                    <Box borderRadius={"100px"} p={1} bgColor={"#ffc9c9"} border={"1px solid #e01f1f"} >
+                        <Text textAlign={"center"} fontSize={"12px"} color={"#e01f1f"} fontWeight={"bold"} letterSpacing={"1.2px"}>Inativo</Text>
                     </Box>
             )
         }
 
         return (
-            professionals.length > 0
+            filteredProfessionals.length > 0
                 ?
                 <Table>
                     <TableCaption>
@@ -614,16 +643,16 @@ const Index = () => {
                             <Th>Nome</Th>
                             <Th>CFM</Th>
                             <Th>CPF</Th>
-                            <Th>Ocupação</Th>
                             <Th>Email</Th>
                             <Th>Telefone</Th>
+                            <Th>Ocupação</Th>
                             <Th>Status</Th>
                             <Th>Ações</Th>
                         </Tr>
                     </Thead>
                     <Tbody>
                         {
-                            professionals?.map((professional: any, index: number) => {
+                            filteredProfessionals?.map((professional: any, index: number) => {
                                 const name = professional.name.split(" ")
 
                                 return (
@@ -631,13 +660,13 @@ const Index = () => {
                                         <Td>{professional.name}</Td>
                                         <Td>{professional.cfm}</Td>
                                         <Td>{professional.cpf}</Td>
-                                        <Td>{professional.occupation}</Td>
                                         <Td>{professional.email}</Td>
                                         <Td>{professional.phone}</Td>
+                                        <Td>{professional.occupation}</Td>
                                         <Td>{applyIsActive(professional.status)}</Td>
                                         <Td>
                                             <Flex gap={4}>
-                                                <Tooltip placement="left" label={`Clique para editar o registro de ${name[0]}`} textAlign={'center'} p={2} bgColor={'black'} borderRadius={'lg'}>
+                                                <Tooltip placement="left" label={`Clique para editar o registro de ${name[0]}`} textAlign={"center"} p={2} bgColor={"black"} borderRadius={"lg"}>
                                                     <Button colorScheme="linkedin" onClick={() => {
                                                         setSelectedProfessional(professional)
                                                         onOpenUpdate()
@@ -645,7 +674,7 @@ const Index = () => {
                                                         <FaPen />
                                                     </Button>
                                                 </Tooltip>
-                                                <Tooltip placement="left" label={`Clique para Apagar o registro de ${name[0]}`} textAlign={'center'} p={2} bgColor={'black'} borderRadius={'lg'}>
+                                                <Tooltip placement="left" label={`Clique para Apagar o registro de ${name[0]}`} textAlign={"center"} p={2} bgColor={"black"} borderRadius={"lg"}>
                                                     <Button colorScheme="red" onClick={() => {
                                                         setSelectedProfessional(professional)
                                                         onOpenRemove()
@@ -662,12 +691,12 @@ const Index = () => {
                     </Tbody>
                 </Table >
                 :
-                <Flex p={'200px'} flexDir={'column'} justifyContent={'center'} alignItems={'center'} width={'100%'}>
-                    <Text>Nenhum dado cadastrado previamente.</Text>
-                    <Text cursor={'pointer'} onClick={() => onOpenAdd()}>Tente cadastrar um novo <b>Profissional</b></Text>
+                <Flex p={"200px"} flexDir={"column"} justifyContent={"center"} alignItems={"center"} width={"100%"}>
+                    <Text>Nenhum dado correspondente.</Text>
+                    <Text cursor={"pointer"} onClick={() => onOpenAdd()}>Tente cadastrar um novo <b>Profissional</b></Text>
                 </Flex>
         )
-    }, [professionals])
+    }, [filteredProfessionals])
 
     // Index
     return (
@@ -686,7 +715,7 @@ const Index = () => {
                     </Text>
                 </Flex>
                 <Flex>
-                    <Tooltip label={'Adicionar um novo profissional a plataforma'} placement={'left'} textAlign={'center'} p={2} bgColor={'black'} borderRadius={'lg'}>
+                    <Tooltip label={"Adicionar um novo profissional a plataforma"} placement={"left"} textAlign={"center"} p={2} bgColor={"black"} borderRadius={"lg"}>
                         <Button leftIcon={<FaPlus />} bgColor={"#1A936F"} color={"white"} _hover={{ bgColor: "#10644B" }} variant="solid" onClick={() => { onOpenAdd() }}>
                             Novo Profissional
                         </Button>
@@ -701,7 +730,7 @@ const Index = () => {
             >
                 <TableSearchProfessionals />
                 <TableListProfessionals />
-                <Box w={'100%'} h={'5px'} bgColor={"#1A936F"}></Box>
+                <Box w={"100%"} h={"5px"} bgColor={"#1A936F"}></Box>
             </Card>
         </Flex>
     )

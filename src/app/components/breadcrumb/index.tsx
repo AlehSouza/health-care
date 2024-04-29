@@ -8,8 +8,8 @@ type IBreadcrumb = {
 
 const Index = ({ breadcrumbpath }: IBreadcrumb) => {
     return (
-        <Flex width={'100%'}>
-            <Breadcrumb spacing='8px' separator={<FaChevronRight color='gray.500' />}>
+        <Flex width={"100%"}>
+            <Breadcrumb spacing="8px" separator={<FaChevronRight color="gray.500" />}>
                 {
                     // #TODO REMOVE ANYS
                     breadcrumbpath.map((path: any, index: number) => {
