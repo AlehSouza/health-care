@@ -27,7 +27,7 @@ const Index: React.ForwardRefRenderFunction<HTMLButtonElement, ISelectProps> = (
                 <FormLabel
                     htmlFor={name}
                     fontSize="sm"
-                    fontWeight="bold"
+                    color="gray"
                     m={0}
                     my={2}
                 >

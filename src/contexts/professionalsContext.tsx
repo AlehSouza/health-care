@@ -5,6 +5,7 @@ import defaultDatabase from "./../services/defaultDatabase"
 
 interface Professional {
     id?: number,
+    image?: string,
     name?: string,
     status?: boolean,
     cpf?: string,
@@ -16,11 +17,14 @@ interface Professional {
     street?: string,
     number?: string,
     neighborhood?: string,
+    currency_hour?: string,
+    service: string,
+    area_acting: string,
     cep?: string,
     uf?: string,
     city?: string,
-    cfm?: string,
-    occupation?: string,
+    register_cfm_crm?: string,
+    specialty?: string,
     created_at?: string,
 }
 
@@ -33,9 +37,10 @@ interface ProfessionalContextType {
     updateProfessional: (updatedProfessional: Professional) => void,
     getAllProfessionals: () => number,
     getByStatus: (status: boolean) => number,
-    getByOccupation: (occupation: string) => number,
+    getByCpf: (cpf: string) => boolean | Professional[],
+    getByOccupation: (specialty: string) => number,
     getByActualMonth: () => number,
-    getFilteredProfessionas: (name?: string, status?: boolean, occupation?: string) => void
+    getFilteredProfessionas: (name?: string, status?: boolean, specialty?: string) => void
 }
 
 const ProfessionalContext = createContext<ProfessionalContextType | undefined>(undefined)
@@ -75,8 +80,13 @@ export function ProviderProfessional({ children }: { children: ReactNode }) {
         return draft.length
     }
 
-    const getByOccupation = (occupation: string) => {
-        const draft = professionals.filter((professional) => professional.occupation === occupation);
+    const getByCpf = (cpf: string) => {
+        const draft = professionals.filter((professional) => professional.cpf?.replace(/[^\d]/g, '') === cpf.replace(/[^\d]/g, ''))
+        return draft.length > 0 ? true : false
+    };
+
+    const getByOccupation = (specialty: string) => {
+        const draft = professionals.filter((professional) => professional.specialty === specialty);
         return draft.length
     }
 
@@ -107,7 +117,7 @@ export function ProviderProfessional({ children }: { children: ReactNode }) {
             if (filters.status && professional?.status?.toString() !== filters.status) {
                 return false;
             }
-            if (filters.occupation && professional.occupation != filters.occupation) {
+            if (filters.specialty && professional.specialty != filters.specialty) {
                 return false;
             }
             return true;
@@ -130,6 +140,7 @@ export function ProviderProfessional({ children }: { children: ReactNode }) {
                 updateProfessional,
                 getAllProfessionals,
                 getByStatus,
+                getByCpf,
                 getByOccupation,
                 getByActualMonth,
                 getFilteredProfessionas

@@ -1,7 +1,7 @@
 "use client"
 
 import { Box, Button, Card, Flex, FormControl, FormLabel, Input, Select, Table, TableCaption, Tbody, Td, Text, Th, Thead, Tooltip, Tr, useDisclosure, useToast } from "@chakra-ui/react"
-import { FaExclamationTriangle, FaPen, FaPlus, FaSearch, FaTrash, FaUserEdit, FaUserPlus } from "react-icons/fa"
+import { FaExclamationTriangle, FaEye, FaFileImage, FaPen, FaPlus, FaSearch, FaTrash, FaUserEdit, FaUserPlus } from "react-icons/fa"
 import { useForm } from "react-hook-form";
 import { Modal } from "..";
 import { useCallback, useState } from "react";
@@ -11,9 +11,12 @@ import * as yup from "yup"
 import InputEnhanced from "../input-enhanced";
 import SelectEnhanced from "../select-enhanced";
 import zipCode from "@/app/helpers/zipCode";
+import Link from "next/link";
+import Image from "next/image";
 
 interface Professional {
     id?: number,
+    image?: string,
     name?: string,
     status?: boolean | string,
     cpf?: string,
@@ -25,18 +28,30 @@ interface Professional {
     street?: string,
     number?: string,
     neighborhood?: string,
+    currency_hour?: string,
+    service?: string,
+    area_acting?: string,
     cep?: string,
     uf?: string,
     city?: string,
-    cfm?: string,
-    occupation?: string,
+    register_cfm_crm?: string,
+    specialty?: string,
     created_at?: string,
 }
 
 const Index = () => {
-    const { professionals, filteredProfessionals, addProfessional, removeProfessional, updateProfessional, getFilteredProfessionas } = useProfessional()
+    const { professionals, filteredProfessionals, addProfessional, removeProfessional, updateProfessional, getFilteredProfessionas, getByCpf } = useProfessional()
     const [selectedProfessional, setSelectedProfessional] = useState<Professional>()
+    const [fileImage, setFileImage] = useState<string | null>(null);
     const toast = useToast()
+
+    const handleFileChange = (event: any) => {
+        const fileList = event.target.files;
+        if (fileList && fileList.length > 0) {
+            const file = fileList[0];
+            setFileImage(URL.createObjectURL(file));
+        }
+    };
 
     const {
         isOpen: isOpenAdd,
@@ -61,9 +76,13 @@ const Index = () => {
 
         const schema = yup.object().shape({
             name: yup.string().required("O campo nome é obrigatório"),
+            image: yup.string(),
             cpf: yup.string().required("O campo CPF é obrigatório"),
-            cfm: yup.string().max(7).required("O campo CFM é obrigatório"),
-            rg: yup.string().max(8).required("O campo RG é obrigatório"),
+            service: yup.string().required("O campo Modalidade de Atendimento é obrigatório"),
+            currency_hour: yup.string().required("O campo Valor por hora é obrigatório"),
+            register_cfm_crm: yup.string().required("O campo CFM / CRM é obrigatório"),
+            area_acting: yup.string().required("O campo Area de atuação é obrigatório"),
+            rg: yup.string().required("O campo RG é obrigatório"),
             birth_date: yup.string().required("O campo Data de Nascimento é obrigatório"),
             email: yup.string().test('emailOrPhoneRequired', 'Preencha o Email caso não possuir nenhum telefone', function (value) {
                 const { phone } = this.parent;
@@ -79,7 +98,7 @@ const Index = () => {
             neighborhood: yup.string().required("O campo Número é obrigatório"),
             uf: yup.string().required("O campo EStado é obrigatório"),
             city: yup.string().required("O campo Cidade é obrigatório"),
-            occupation: yup.string().required("O campo Ocupação é obrigatório"),
+            specialty: yup.string().required("O campo Especialidade é obrigatório"),
             status: yup.string().required("O campo Status é obrigatório"),
         }).required();
 
@@ -118,6 +137,19 @@ const Index = () => {
                 address,
                 created_at,
                 id,
+                image: fileImage
+            }
+
+            if (getByCpf(e.cpf)) {
+                toast({
+                    title: "Ops",
+                    description: "Parece que o CPF que você tentou cadastrar já existe na plataforma.",
+                    status: "error",
+                    duration: 9000,
+                    isClosable: true,
+                    position: "top-right"
+                })
+                return
             }
 
             try {
@@ -151,6 +183,7 @@ const Index = () => {
                 color={"#1A936F"}
                 onClose={onCloseAdd}
                 isOpen={isOpenAdd}
+                location={'inside'}
                 title={
                     <Flex alignItems={'center'} gap={4}>
                         <FaUserPlus fontSize={'32px'} color="#1A936F" />
@@ -161,19 +194,57 @@ const Index = () => {
                 }
             >
                 <form onSubmit={handleSubmit(onSubmit)}>
-                    <Flex flexDir={"column"}>
-                        <Flex flexDir={"column"}>
-                            <InputEnhanced
-                                {...register("name")}
-                                error={errors.name}
-                                isReq={true}
-                                label={"Nome"}
-                                placeholder="João da Silva"
-                                textTransform={"capitalize"}
-                                mask="defaultValue"
-                            />
+                    <Flex flexDir={"column"} pt={2}>
+                        <Flex width={"100%"} justifyContent={"left"} alignItems="center" flexDirection={'row'} bgColor={'#1A936F'} borderRadius={'lg'} p={6}>
+                            <Box width={'150px'} height={'150px'} pos={'relative'} borderRadius={'100px'} overflow={'hidden'} property="true" border={'5px solid white'}>
+                                <Image src={fileImage ? fileImage : 'https://firebasestorage.googleapis.com/v0/b/projects-cd0f3.appspot.com/o/umbaraco%2Fprofile_pic_man.png?alt=media&token=2a1c1256-c7d6-46ac-8488-28207f2bc760'} fill alt={`example icon`} />
+                            </Box>
+                            <Text color={'white'} fontWeight={'bold'} p={4} fontSize={'22px'}>
+                                Umbaraco <br />
+                                Profissional da Saúde 🥼
+                            </Text>
                         </Flex>
 
+                        <Text width={'auto'} fontWeight={'bold'} pt={4}>
+                            Dados da conta
+                        </Text>
+                        <Flex width={"100%"} gap={4}>
+                            <Flex flexDir={"column"} width={"100%"}>
+                                <InputEnhanced
+                                    {...register("name")}
+                                    isReq={true}
+                                    label={"Nome"}
+                                    placeholder="João da Silva"
+                                    textTransform={"capitalize"}
+                                    mask="defaultValue"
+                                />
+                            </Flex>
+                            <Flex flexDir={"column"} width={"20%"}>
+                                <InputEnhanced
+                                    {...register("image")}
+                                    label={"Foto"}
+                                    pos={'absolute'}
+                                    top={'-1000px'}
+                                    left={'-1000px'}
+                                    mask="defaultValue"
+                                    type="file"
+                                    id="image"
+                                    onChange={(e) => { handleFileChange(e) }}
+                                />
+                                <Button my={1} bgColor={'#1A936F'} width={'100%'} zIndex={0} p={0}>
+                                    <label htmlFor="image" style={{
+                                        justifyContent: 'center',
+                                        alignItems: 'center',
+                                        display: 'flex',
+                                        width: '100%',
+                                        padding: '8px',
+                                        cursor: 'pointer',
+                                    }}>
+                                        <FaFileImage color="white" />
+                                    </label>
+                                </Button>
+                            </Flex>
+                        </Flex>
                         <Flex gap={4}>
                             <Flex flexDir={"column"} width={"100%"}>
                                 <InputEnhanced
@@ -196,15 +267,24 @@ const Index = () => {
                                     maxLength={9}
                                 />
                             </Flex>
+                            <Flex flexDir={"column"} width={"100%"}>
+                                <InputEnhanced
+                                    label={"Telefone"}
+                                    {...register("phone")}
+                                    isReq={false}
+                                    error={errors.phone}
+                                    placeholder="(11) 99999-9999"
+                                    mask="phone"
+                                />
+                            </Flex>
                         </Flex>
-
                         <Flex gap={4}>
                             <Flex flexDir={"column"} width={"100%"}>
                                 <InputEnhanced
-                                    label={"CFM"}
-                                    {...register("cfm")}
+                                    label={"CFM / CRM"}
+                                    {...register("register_cfm_crm")}
                                     isReq={true}
-                                    error={errors.cfm}
+                                    error={errors.register_cfm_crm}
                                     placeholder="ABL23984"
                                     mask="defaultValue"
                                     maxLength={8}
@@ -222,7 +302,6 @@ const Index = () => {
                                 />
                             </Flex>
                         </Flex>
-
                         <Flex flexDir={"column"}>
                             <InputEnhanced
                                 label={"Email"}
@@ -235,17 +314,10 @@ const Index = () => {
                             />
                         </Flex>
 
+                        <Text width={'auto'} fontWeight={'bold'} pt={4}>
+                            Endereço
+                        </Text>
                         <Flex gap={4}>
-                            <Flex flexDir={"column"} width={"100%"}>
-                                <InputEnhanced
-                                    label={"Telefone"}
-                                    {...register("phone")}
-                                    isReq={false}
-                                    error={errors.phone}
-                                    placeholder="(11) 99999-9999"
-                                    mask="phone"
-                                />
-                            </Flex>
                             <Flex flexDir={"column"} width={"100%"}>
                                 <InputEnhanced
                                     label={"CEP"}
@@ -259,19 +331,6 @@ const Index = () => {
                                     }}
                                 />
                             </Flex>
-                        </Flex>
-
-                        <Flex gap={4}>
-                            <Flex flexDir={"column"} width={"100%"}>
-                                <InputEnhanced
-                                    label={"Bairro"}
-                                    {...register("neighborhood")}
-                                    isReq={true}
-                                    error={errors.neighborhood}
-                                    placeholder="Pq. Lorem Ipsum"
-                                    mask="defaultValue"
-                                />
-                            </Flex>
                             <Flex flexDir={"column"} width={"100%"}>
                                 <InputEnhanced
                                     label={"Número"}
@@ -282,8 +341,18 @@ const Index = () => {
                                     mask="defaultValue"
                                 />
                             </Flex>
-                        </Flex>
 
+                            <Flex flexDir={"column"} width={"100%"}>
+                                <InputEnhanced
+                                    label={"Bairro"}
+                                    {...register("neighborhood")}
+                                    isReq={true}
+                                    error={errors.neighborhood}
+                                    placeholder="Pq. Lorem Ipsum"
+                                    mask="defaultValue"
+                                />
+                            </Flex>
+                        </Flex>
                         <Flex gap={4}>
                             <Flex flexDir={"column"} width={"100%"}>
                                 <InputEnhanced
@@ -296,7 +365,6 @@ const Index = () => {
                                 />
                             </Flex>
                         </Flex>
-
                         <Flex gap={4}>
                             <Flex flexDir={"column"} width={"35%"}>
                                 <SelectEnhanced
@@ -349,13 +417,41 @@ const Index = () => {
 
                         </Flex>
 
+                        <Text width={'auto'} fontWeight={'bold'} pt={4}>
+                            Informações de Serviço
+                        </Text>
+                        <Flex gap={4}>
+                            <Flex flexDir={"column"} width={"100%"}>
+                                <InputEnhanced
+                                    isReq={true}
+                                    {...register("currency_hour")}
+                                    error={errors.currency_hour}
+                                    label={"Valor por hora"}
+                                    placeholder="R$ 2,99"
+                                    mask="currency"
+                                    maxLength={8}
+                                />
+                            </Flex>
+                            <Flex flexDir={"column"} width={"100%"}>
+                                <SelectEnhanced
+                                    isReq={true}
+                                    {...register("service")}
+                                    error={errors.service}
+                                    label={"Modalidade de Atendimento"}
+                                    placeholder="Selecione..."
+                                >
+                                    <option value="Presencial">Presencial</option>
+                                    <option value="Consulta Online">Consulta Online</option>
+                                </SelectEnhanced>
+                            </Flex>
+                        </Flex>
                         <Flex gap={4}>
                             <Flex flexDir={"column"} width={"100%"}>
                                 <SelectEnhanced
                                     isReq={true}
-                                    {...register("occupation")}
-                                    error={errors.occupation}
-                                    label={"Ocupação"}
+                                    {...register("specialty")}
+                                    error={errors.specialty}
+                                    label={"Especialidade"}
                                     placeholder="Selecione..."
                                 >
                                     <option value="Cirurgia Geral">Cirurgia Geral</option>
@@ -372,15 +468,30 @@ const Index = () => {
                             </Flex>
                             <Flex flexDir={"column"} width={"35%"}>
                                 <SelectEnhanced
-                                    isReq={true}
                                     {...register("status")}
+                                    placeholder="Selecione..."
                                     error={errors.status}
                                     label={"Status"}
-                                    placeholder="Selecione..."
+                                    isReq={true}
                                 >
                                     <option value="true">Ativo</option>
                                     <option value="false">Inativo</option>
                                 </SelectEnhanced>
+                            </Flex>
+                        </Flex>
+                        <Flex flexDir={"column"} width={"100%"}>
+                            <InputEnhanced
+                                label={"Área de Atuação"}
+                                {...register("area_acting")}
+                                isReq={true}
+                                error={errors.street}
+                                placeholder="Ex: Zona Leste de São Paulo ou Ex: 00000-000 (Cep)"
+                                mask="defaultValue"
+                            />
+                        </Flex>
+                        <Flex flexDir={"column"} width={"100%"} borderRadius={'lg'} overflow={'hidden'} mt={4}>
+                            <Flex>
+                                <iframe src={`https://www.google.com.br/maps?q=${selectedProfessional?.area_acting},%20Brasil&output=embed`} width="100%" height="290px" style={{ border: '0px' }} loading="lazy" />
                             </Flex>
                         </Flex>
                     </Flex>
@@ -397,8 +508,12 @@ const Index = () => {
     const ModalUpdateProfessional = () => {
         const schema = yup.object().shape({
             name: yup.string().required("O campo nome é obrigatório"),
+            image: yup.string(),
             cpf: yup.string().required("O campo CPF é obrigatório"),
-            cfm: yup.string().required("O campo CFM é obrigatório"),
+            service: yup.string().required("O campo Modalidade de Atendimento é obrigatório"),
+            currency_hour: yup.string().required("O campo Valor por hora é obrigatório"),
+            register_cfm_crm: yup.string().required("O campo CFM / CRM é obrigatório"),
+            area_acting: yup.string().required("O campo Area de atuação é obrigatório"),
             rg: yup.string().required("O campo RG é obrigatório"),
             birth_date: yup.string().required("O campo Data de Nascimento é obrigatório"),
             email: yup.string().test('emailOrPhoneRequired', 'Preencha o Email caso não possuir nenhum telefone', function (value) {
@@ -415,7 +530,7 @@ const Index = () => {
             neighborhood: yup.string().required("O campo Número é obrigatório"),
             uf: yup.string().required("O campo EStado é obrigatório"),
             city: yup.string().required("O campo Cidade é obrigatório"),
-            occupation: yup.string().required("O campo Ocupação é obrigatório"),
+            specialty: yup.string().required("O campo Especialidade é obrigatório"),
             status: yup.string().required("O campo Status é obrigatório"),
         }).required();
 
@@ -440,12 +555,37 @@ const Index = () => {
         }
 
         const handleUpdateProfessional = (e: Professional) => {
-            const professionalToUpdate = professionals.find(professional => professional.id === selectedProfessional?.id);
-            const draft = { ...e, status: e?.status?.toString() === "true" ? true : false }
-            if (professionalToUpdate) {
-                updateProfessional({ ...professionalToUpdate, ...draft });
+            try {
+                const professionalToUpdate = professionals.find(professional => professional.id === selectedProfessional?.id);
+                const draft = {
+                    ...e,
+                    status: e?.status?.toString() === "true" ? true : false,
+                    image: fileImage ? fileImage : selectedProfessional?.image
+                }
+                if (professionalToUpdate) {
+                    updateProfessional({ ...professionalToUpdate, ...draft });
+                }
+                onCloseUpdate()
+                toast({
+                    title: "Sucesso",
+                    description: "O profissional foi atualizado.",
+                    status: "info",
+                    duration: 9000,
+                    isClosable: true,
+                    position: "top-right"
+                })
+                setFileImage('')
+            } catch (e) {
+                console.error(e)
+                toast({
+                    title: "Erro",
+                    description: "Sentimos muito, não foi possível concluir a sua ação, já estamos trabalhando nisso",
+                    status: "error",
+                    duration: 9000,
+                    isClosable: true,
+                    position: "top-right"
+                })
             }
-            onCloseUpdate()
         }
 
         return (
@@ -453,6 +593,7 @@ const Index = () => {
                 color={"#FF9900"}
                 onClose={onCloseUpdate}
                 isOpen={isOpenUpdate}
+                location={'inside'}
                 title={
                     <Flex alignItems={'center'} gap={4}>
                         <FaUserEdit fontSize={'32px'} color="#FF9900" />
@@ -463,20 +604,62 @@ const Index = () => {
                 }
             >
                 <form onSubmit={handleSubmit(handleUpdateProfessional)}>
-                    <Flex flexDir={"column"}>
-                        <Flex flexDir={"column"}>
-                            <InputEnhanced
-                                {...register("name")}
-                                defaultValue={selectedProfessional?.name}
-                                error={errors.name}
-                                isReq={true}
-                                label={"Nome"}
-                                placeholder="João da Silva"
-                                textTransform={"capitalize"}
-                                mask="defaultValue"
-                            />
+                    <Flex flexDir={"column"} pt={2}>
+                        <Flex width={"100%"} justifyContent={"left"} alignItems="center" flexDirection={'row'} bgColor={'#FF9900'} borderRadius={'lg'} p={6}>
+                            <Box width={'150px'} height={'150px'} pos={'relative'} borderRadius={'100px'} overflow={'hidden'} property="true" border={'5px solid white'}>
+                                <Image src={`${fileImage || selectedProfessional?.image}`} fill alt={`example icon`} />
+                            </Box>
+                            <Flex flexDir={'column'} px={4} margin={'0 auto'}>
+                                <Text color={'white'} fontWeight={'bold'} py={2} pb={0} fontSize={'22px'}>
+                                    Umbaraco
+                                </Text>
+                                <Text color={'white'} fontWeight={'bold'} py={2} fontSize={'22px'} noOfLines={1}>
+                                    {selectedProfessional?.name} 🥼
+                                </Text>
+                            </Flex>
                         </Flex>
 
+                        <Text width={'auto'} fontWeight={'bold'} pt={4}>
+                            Dados da conta
+                        </Text>
+                        <Flex width={"100%"} gap={4}>
+                            <Flex flexDir={"column"} width={"100%"}>
+                                <InputEnhanced
+                                    {...register("name")}
+                                    isReq={true}
+                                    label={"Nome"}
+                                    defaultValue={selectedProfessional?.name}
+                                    placeholder="João da Silva"
+                                    textTransform={"capitalize"}
+                                    mask="defaultValue"
+                                />
+                            </Flex>
+                            <Flex flexDir={"column"} width={"20%"}>
+                                <InputEnhanced
+                                    {...register("image")}
+                                    label={"Foto"}
+                                    pos={'absolute'}
+                                    top={'-1000px'}
+                                    left={'-1000px'}
+                                    mask="defaultValue"
+                                    type="file"
+                                    id="image"
+                                    onChange={(e) => { handleFileChange(e) }}
+                                />
+                                <Button my={1} bgColor={'#1A936F'} width={'100%'} zIndex={0} p={0}>
+                                    <label htmlFor="image" style={{
+                                        justifyContent: 'center',
+                                        alignItems: 'center',
+                                        display: 'flex',
+                                        width: '100%',
+                                        padding: '8px',
+                                        cursor: 'pointer',
+                                    }}>
+                                        <FaFileImage color="white" />
+                                    </label>
+                                </Button>
+                            </Flex>
+                        </Flex>
                         <Flex gap={4}>
                             <Flex flexDir={"column"} width={"100%"}>
                                 <InputEnhanced
@@ -501,16 +684,26 @@ const Index = () => {
                                     maxLength={9}
                                 />
                             </Flex>
+                            <Flex flexDir={"column"} width={"100%"}>
+                                <InputEnhanced
+                                    label={"Telefone"}
+                                    {...register("phone")}
+                                    defaultValue={selectedProfessional?.phone}
+                                    isReq={false}
+                                    error={errors.phone}
+                                    placeholder="(11) 99999-9999"
+                                    mask="phone"
+                                />
+                            </Flex>
                         </Flex>
-
                         <Flex gap={4}>
                             <Flex flexDir={"column"} width={"100%"}>
                                 <InputEnhanced
-                                    label={"CFM"}
-                                    {...register("cfm")}
-                                    defaultValue={selectedProfessional?.cfm}
+                                    label={"CFM / CRM"}
+                                    {...register("register_cfm_crm")}
+                                    defaultValue={selectedProfessional?.register_cfm_crm}
                                     isReq={true}
-                                    error={errors.cfm}
+                                    error={errors.register_cfm_crm}
                                     placeholder="ABL23984"
                                     mask="defaultValue"
                                     maxLength={8}
@@ -529,7 +722,6 @@ const Index = () => {
                                 />
                             </Flex>
                         </Flex>
-
                         <Flex flexDir={"column"}>
                             <InputEnhanced
                                 label={"Email"}
@@ -543,18 +735,10 @@ const Index = () => {
                             />
                         </Flex>
 
+                        <Text width={'auto'} fontWeight={'bold'} pt={4}>
+                            Endereço
+                        </Text>
                         <Flex gap={4}>
-                            <Flex flexDir={"column"} width={"100%"}>
-                                <InputEnhanced
-                                    label={"Telefone"}
-                                    {...register("phone")}
-                                    defaultValue={selectedProfessional?.phone}
-                                    isReq={false}
-                                    error={errors.phone}
-                                    placeholder="(11) 99999-9999"
-                                    mask="phone"
-                                />
-                            </Flex>
                             <Flex flexDir={"column"} width={"100%"}>
                                 <InputEnhanced
                                     label={"CEP"}
@@ -569,20 +753,6 @@ const Index = () => {
                                     }}
                                 />
                             </Flex>
-                        </Flex>
-
-                        <Flex gap={4}>
-                            <Flex flexDir={"column"} width={"100%"}>
-                                <InputEnhanced
-                                    label={"Bairro"}
-                                    {...register("neighborhood")}
-                                    defaultValue={selectedProfessional?.neighborhood}
-                                    isReq={true}
-                                    error={errors.neighborhood}
-                                    placeholder="Pq. Lorem Ipsum"
-                                    mask="defaultValue"
-                                />
-                            </Flex>
                             <Flex flexDir={"column"} width={"100%"}>
                                 <InputEnhanced
                                     label={"Número"}
@@ -594,8 +764,19 @@ const Index = () => {
                                     mask="defaultValue"
                                 />
                             </Flex>
-                        </Flex>
 
+                            <Flex flexDir={"column"} width={"100%"}>
+                                <InputEnhanced
+                                    label={"Bairro"}
+                                    {...register("neighborhood")}
+                                    defaultValue={selectedProfessional?.neighborhood}
+                                    isReq={true}
+                                    error={errors.neighborhood}
+                                    placeholder="Pq. Lorem Ipsum"
+                                    mask="defaultValue"
+                                />
+                            </Flex>
+                        </Flex>
                         <Flex gap={4}>
                             <Flex flexDir={"column"} width={"100%"}>
                                 <InputEnhanced
@@ -609,7 +790,6 @@ const Index = () => {
                                 />
                             </Flex>
                         </Flex>
-
                         <Flex gap={4}>
                             <Flex flexDir={"column"} width={"35%"}>
                                 <SelectEnhanced
@@ -664,14 +844,44 @@ const Index = () => {
 
                         </Flex>
 
+                        <Text width={'auto'} fontWeight={'bold'} pt={4}>
+                            Informações de Serviço
+                        </Text>
+                        <Flex gap={4}>
+                            <Flex flexDir={"column"} width={"100%"}>
+                                <InputEnhanced
+                                    isReq={true}
+                                    {...register("currency_hour")}
+                                    defaultValue={selectedProfessional?.currency_hour}
+                                    error={errors.currency_hour}
+                                    label={"Valor por hora"}
+                                    placeholder="R$ 2,99"
+                                    mask="currency"
+                                    maxLength={8}
+                                />
+                            </Flex>
+                            <Flex flexDir={"column"} width={"100%"}>
+                                <SelectEnhanced
+                                    isReq={true}
+                                    {...register("service")}
+                                    defaultValue={selectedProfessional?.service}
+                                    error={errors.service}
+                                    label={"Modalidade de Atendimento"}
+                                    placeholder="Selecione..."
+                                >
+                                    <option value="Presencial">Presencial</option>
+                                    <option value="Consulta Online">Consulta Online</option>
+                                </SelectEnhanced>
+                            </Flex>
+                        </Flex>
                         <Flex gap={4}>
                             <Flex flexDir={"column"} width={"100%"}>
                                 <SelectEnhanced
                                     isReq={true}
-                                    {...register("occupation")}
-                                    defaultValue={selectedProfessional?.occupation}
-                                    error={errors.occupation}
-                                    label={"Ocupação"}
+                                    {...register("specialty")}
+                                    defaultValue={selectedProfessional?.specialty}
+                                    error={errors.specialty}
+                                    label={"Especialidade"}
                                     placeholder="Selecione..."
                                 >
                                     <option value="Cirurgia Geral">Cirurgia Geral</option>
@@ -700,6 +910,22 @@ const Index = () => {
                                 </SelectEnhanced>
                             </Flex>
                         </Flex>
+                        <Flex flexDir={"column"} width={"100%"}>
+                            <InputEnhanced
+                                label={"Área de Atuação"}
+                                {...register("area_acting")}
+                                defaultValue={selectedProfessional?.area_acting}
+                                isReq={true}
+                                error={errors.street}
+                                placeholder="Ex: Zona Leste de São Paulo ou Ex: 00000-000 (Cep)"
+                                mask="defaultValue"
+                            />
+                        </Flex>
+                        <Flex flexDir={"column"} width={"100%"} borderRadius={'lg'} overflow={'hidden'} mt={4}>
+                            <Flex>
+                                <iframe src={`https://www.google.com.br/maps?q=${selectedProfessional?.area_acting},%20Brasil&output=embed`} width="100%" height="290px" style={{ border: '0px' }} loading="lazy" />
+                            </Flex>
+                        </Flex>
                     </Flex>
                     <Flex justifyContent={"flex-end"} gap={4} py={4}>
                         <Button onClick={() => { onCloseUpdate() }} colorScheme="red">Cancelar</Button>
@@ -720,8 +946,24 @@ const Index = () => {
         const handleRemoveProfessional = () => {
             try {
                 removeProfessional(selectedProfessional?.id!)
+                toast({
+                    title: "Sucesso",
+                    description: "O profissional foi deletado.",
+                    status: "info",
+                    duration: 9000,
+                    isClosable: true,
+                    position: "top-right"
+                })
             } catch (e) {
                 console.error(e)
+                toast({
+                    title: "Erro",
+                    description: "Sentimos muito, não foi possível concluir a sua ação, já estamos trabalhando nisso",
+                    status: "error",
+                    duration: 9000,
+                    isClosable: true,
+                    position: "top-right"
+                })
             } finally {
                 onCloseRemove()
             }
@@ -798,8 +1040,8 @@ const Index = () => {
                             w={"20%"}
                         >
                             <FormControl>
-                                <FormLabel fontSize={"14px"} color={"white"}>Ocupação</FormLabel>
-                                <Select {...register("occupation")} placeholder="Selecione..." bgColor={"white"}>
+                                <FormLabel fontSize={"14px"} color={"white"}>Especialidade</FormLabel>
+                                <Select {...register("specialty")} placeholder="Selecione..." bgColor={"white"}>
                                     <option value="Cirurgia Geral">Cirurgia Geral</option>
                                     <option value="Clínica Médica">Clínica Médica</option>
                                     <option value="Ginecologia e Obstetrícia">Ginecologia e Obstetrícia</option>
@@ -861,12 +1103,12 @@ const Index = () => {
                     <Thead>
                         <Tr>
                             <Th>Nome</Th>
-                            <Th>CFM</Th>
+                            <Th>Status</Th>
+                            <Th>CFM / CRM</Th>
                             <Th>CPF</Th>
+                            <Th>Especialidade</Th>
                             <Th>Email</Th>
                             <Th>Telefone</Th>
-                            <Th>Ocupação</Th>
-                            <Th>Status</Th>
                             <Th>Ações</Th>
                         </Tr>
                     </Thead>
@@ -878,16 +1120,28 @@ const Index = () => {
                                 return (
                                     <Tr key={index}>
                                         <Td>{professional.name || 'Não Cadastrado'}</Td>
-                                        <Td>{professional.cfm || 'Não Cadastrado'}</Td>
+                                        <Td>{applyIsActive(professional.status) || 'Não Cadastrado'}</Td>
+                                        <Td>{professional.register_cfm_crm || 'Não Cadastrado'}</Td>
                                         <Td>{professional.cpf || 'Não Cadastrado'}</Td>
+                                        <Td>{professional.specialty || 'Não Cadastrado'}</Td>
                                         <Td>{professional.email || 'Não Cadastrado'}</Td>
                                         <Td>{professional.phone || 'Não Cadastrado'}</Td>
-                                        <Td>{professional.occupation || 'Não Cadastrado'}</Td>
-                                        <Td>{applyIsActive(professional.status) || 'Não Cadastrado'}</Td>
                                         <Td>
                                             <Flex gap={4}>
+                                                <Link href={`${professional.id}`} target="_blank">
+                                                    <Tooltip placement="left" label={`Clique para visualizar o registro de ${name[0]}`} textAlign={"center"} p={2} bgColor={"black"} borderRadius={"lg"}>
+                                                        <Button colorScheme="whatsapp" onClick={() => {
+                                                            setSelectedProfessional(professional)
+                                                            console.log('teste')
+                                                        }}>
+                                                            <FaEye />
+                                                        </Button>
+                                                    </Tooltip>
+                                                </Link>
                                                 <Tooltip placement="left" label={`Clique para editar o registro de ${name[0]}`} textAlign={"center"} p={2} bgColor={"black"} borderRadius={"lg"}>
                                                     <Button colorScheme="linkedin" onClick={() => {
+                                                        setFileImage('')
+                                                        console.log(professional)
                                                         setSelectedProfessional(professional)
                                                         onOpenUpdate()
                                                     }}>
@@ -936,7 +1190,10 @@ const Index = () => {
                 </Flex>
                 <Flex>
                     <Tooltip label={"Adicionar um novo profissional a plataforma"} placement={"left"} textAlign={"center"} p={2} bgColor={"black"} borderRadius={"lg"}>
-                        <Button leftIcon={<FaPlus />} bgColor={"#1A936F"} color={"white"} _hover={{ bgColor: "#10644B" }} variant="solid" onClick={() => { onOpenAdd() }}>
+                        <Button leftIcon={<FaPlus />} bgColor={"#1A936F"} color={"white"} _hover={{ bgColor: "#10644B" }} variant="solid" onClick={() => { 
+                            setFileImage('')
+                            onOpenAdd()
+                         }}>
                             Novo Profissional
                         </Button>
                     </Tooltip>

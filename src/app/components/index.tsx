@@ -5,8 +5,8 @@ import InputEnhanced from "./input-enhanced"
 import SelectEnhanced from "./select-enhanced"
 import DashboardCard from "./dashboard-card"
 import ChartProfessionals from "./chart-professionals"
-import Modal from "./modal"
 import TableProfessionals from "./table-professionals"
+import Modal from "./modal"
 import Footer from "./footer"
 
 export {

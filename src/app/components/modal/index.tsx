@@ -16,13 +16,15 @@ type IModal = {
     children: ReactNode
     title?: string | ReactNode,
     size?: string
+    location?: string | any
+    footer?: ReactNode
 }
 
-function Index({ onClose, isOpen, title, children, size = "xl", color }: IModal) {
+function Index({ onClose, isOpen, title, children, size = "xl", color, location = "", footer}: IModal) {
 
     return (
         <>
-            <Modal onClose={onClose} isOpen={isOpen} size={size} isCentered>
+            <Modal onClose={onClose} isOpen={isOpen} size={size} isCentered  scrollBehavior={location}>
                 <ModalOverlay />
                 <ModalContent>
                     <ModalHeader style={{ letterSpacing: "1px" }}>{title && title}</ModalHeader>
@@ -30,6 +32,7 @@ function Index({ onClose, isOpen, title, children, size = "xl", color }: IModal)
                     <ModalBody borderTop={`5px solid ${color}`}>
                         {children}
                     </ModalBody>
+                    {footer}
                 </ModalContent>
             </Modal>
         </>

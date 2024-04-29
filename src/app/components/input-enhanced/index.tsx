@@ -34,7 +34,7 @@ const Index: React.ForwardRefRenderFunction<HTMLInputElement, IInputProps> = (
           my={2}
           htmlFor={name}
           fontSize="sm"
-          fontWeight="bold"
+          color={'grey'}
         >
           {label}
         </FormLabel>

@@ -129,12 +129,12 @@ const Index = () => {
                     <Doughnut data={finalData} options={options} />
                     <Flex flexDir={"column"} pl={8}>
                         {
-                            data.map((occupation, index) => {
+                            data.map((specialty, index) => {
                                 return (
-                                    <TooltipChakra key={index} label={`Cadastrados: ${occupation.value}`} placement={"bottom"} textAlign={"center"} p={2} bgColor={"black"} borderRadius={"lg"}>
+                                    <TooltipChakra key={index} label={`Cadastrados: ${specialty.value}`} placement={"bottom"} textAlign={"center"} p={2} bgColor={"black"} borderRadius={"lg"}>
                                         <Flex alignItems={"center"} gap={2} pb={1} >
-                                            <Box width={"12px"} height={"12px"} bgColor={occupation.color} borderRadius={"100px"} />
-                                            <Text fontSize={"14px"}>{occupation.label}</Text>
+                                            <Box width={"12px"} height={"12px"} bgColor={specialty.color} borderRadius={"100px"} />
+                                            <Text fontSize={"14px"}>{specialty.label}</Text>
                                         </Flex>
                                     </TooltipChakra>
                                 )
