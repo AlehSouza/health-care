@@ -1,11 +1,18 @@
 import { Box, Flex } from "@chakra-ui/react"
 import { Footer, NavigationBar } from "../components"
 
-type IProps = {
+type IDashboardLayout = {
     children: React.ReactNode
 }
 
-const DashboardLayout = ({ children }: IProps) => {
+import type { Metadata } from "next"
+
+export const metadata: Metadata = {
+    title: "Umbaraco | Dashboard",
+    description: "Dashboard with all professional data",
+}
+
+const DashboardLayout = ({ children }: IDashboardLayout) => {
     return (
         <Flex
             justifyContent={"center"}

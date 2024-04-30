@@ -1,7 +1,7 @@
 import { Flex, Text, Input, Button } from "@chakra-ui/react"
 import Link from "next/link"
 
-const Index = () => {
+const Login = () => {
     return (
         <Flex bgColor={"white"} w={"400px"} h={"100%"} p={12} borderRadius={"lg"} flexDirection={"column"} justifyContent={"space-between"} boxShadow={"lg"}>
             <Flex>
@@ -39,4 +39,4 @@ const Index = () => {
     )
 }
 
-export default Index
+export default Login

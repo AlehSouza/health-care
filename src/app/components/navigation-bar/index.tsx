@@ -1,6 +1,6 @@
 "use client"
 
-import { ReactNode } from "react";
+import { ReactNode } from "react"
 import {
     Box,
     Flex,
@@ -16,10 +16,10 @@ import {
     useDisclosure,
     Stack,
     Text,
-} from "@chakra-ui/react";
-import { FaBars, FaCapsules, FaTimes } from "react-icons/fa";
+} from "@chakra-ui/react"
+import { FaBars, FaCapsules, FaTimes } from "react-icons/fa"
 
-const Links = ["Dashboard"];
+const Links = ["Dashboard"]
 
 const NavLink = ({ children }: { children: ReactNode }) => (
     <Link
@@ -33,10 +33,10 @@ const NavLink = ({ children }: { children: ReactNode }) => (
         href={"#"}>
         {children}
     </Link>
-);
+)
 
 const NavigationBar = () => {
-    const { isOpen, onOpen, onClose } = useDisclosure();
+    const { isOpen, onOpen, onClose } = useDisclosure()
 
     return (
         <Box
@@ -108,7 +108,7 @@ const NavigationBar = () => {
                 </Box>
             ) : null}
         </Box>
-    );
+    )
 }
 
 export default NavigationBar

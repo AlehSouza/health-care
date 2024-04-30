@@ -4,38 +4,38 @@ import { FormEvent } from "react"
 function numberdaysmonth(event: FormEvent<HTMLInputElement>) {
     Object.assign(event.currentTarget, {
         maxLength: 2,
-    });
+    })
 
-    const { value } = event.currentTarget;
+    const { value } = event.currentTarget
     Object.assign(event.currentTarget, {
         value: value
             .replace(/\D/g, '')
-    });
+    })
 }
 
 function number(event: FormEvent<HTMLInputElement>) {
-    const { value } = event.currentTarget;
+    const { value } = event.currentTarget
     Object.assign(event.currentTarget, {
         value: value
             .replace(/\D/g, '')
-    });
+    })
 }
 
 function phone(event: FormEvent<HTMLInputElement>) {
     Object.assign(event.currentTarget, {
         maxLength: 15,
-    });
+    })
 
-    const { value } = event.currentTarget;
+    const { value } = event.currentTarget
 
     if (value.length === 11) {
         Object.assign(event.currentTarget, {
             value: value.replace(/(\d{2})?(\d{5})?(\d{4})/, '($1) $2-$3')
-        });
+        })
     } else {
         Object.assign(event.currentTarget, {
             value: value.replace(/\D/g, '')
-        });
+        })
     }
 
 }
@@ -43,18 +43,18 @@ function phone(event: FormEvent<HTMLInputElement>) {
 function cpf(event: FormEvent<HTMLInputElement>) {
     Object.assign(event.currentTarget, {
         maxLength: 14,
-    });
+    })
 
-    const { value } = event.currentTarget;
+    const { value } = event.currentTarget
 
     if (value.length === 11) {
         Object.assign(event.currentTarget, {
             value: value.replace(/(\d{3})?(\d{3})?(\d{3})?(\d{2})/, '$1.$2.$3-$4')
-        });
+        })
     } else {
         Object.assign(event.currentTarget, {
             value: value.replace(/\D/g, '')
-        });
+        })
     }
 
 }
@@ -62,9 +62,9 @@ function cpf(event: FormEvent<HTMLInputElement>) {
 function cnpj(event: FormEvent<HTMLInputElement>) {
     Object.assign(event.currentTarget, {
         maxLength: 18,
-    });
+    })
 
-    const { value } = event.currentTarget;
+    const { value } = event.currentTarget
 
     Object.assign(event.currentTarget, {
         value: value
@@ -73,7 +73,7 @@ function cnpj(event: FormEvent<HTMLInputElement>) {
             .replace(/^(\d{2})\.(\d{3})(\d)/, '$1.$2.$3')
             .replace(/\.(\d{3})(\d)/, '.$1/$2')
             .replace(/(\d{4})(\d)/, '$1-$2')
-    });
+    })
 }
 
 function percent(event: FormEvent<HTMLInputElement>) {
@@ -192,9 +192,9 @@ function defaultValue(e: any) { }
 function cep(event: FormEvent<HTMLInputElement>) {
     Object.assign(event.currentTarget, {
         maxLength: 9,
-    });
+    })
 
-    const { value } = event.currentTarget;
+    const { value } = event.currentTarget
 
     Object.assign(event.currentTarget, {
         value: value

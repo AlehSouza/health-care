@@ -1,74 +1,74 @@
-"use client";
-import React from "react";
-import { Chart as ChartJS, ArcElement, Tooltip, Legend } from "chart.js";
-import { Doughnut } from "react-chartjs-2";
+"use client"
+import React from "react"
+import { Chart as ChartJS, ArcElement, Tooltip, Legend } from "chart.js"
+import { Doughnut } from "react-chartjs-2"
 import { Box, Card, CardHeader, Flex, Heading, IconButton, Tooltip as TooltipChakra, Text } from "@chakra-ui/react"
-import { FaChartPie, FaInfoCircle } from "react-icons/fa";
-import { useProfessional } from "@/contexts/professionals.context";
+import { FaChartPie, FaInfoCircle } from "react-icons/fa"
+import { useProfessional } from "@/contexts/professionals.context"
 
-ChartJS.register(ArcElement, Tooltip, Legend);
+ChartJS.register(ArcElement, Tooltip, Legend)
 
-const Index = () => {
+const Chart = () => {
     const { getProfessionalsBySpecialty } = useProfessional()
 
     let data = [
         {
-            label: "Ortopedista",
             value: getProfessionalsBySpecialty("Ortopedista"),
+            label: "Ortopedista",
             color: "#C52907",
             cutout: "50%",
         },
         {
-            label: "Cirurgia Geral",
             value: getProfessionalsBySpecialty("Cirurgia Geral"),
+            label: "Cirurgia Geral",
             color: "#0EBDFF",
             cutout: "50%",
         },
         {
-            label: "Clínica Médica",
             value: getProfessionalsBySpecialty("Clínica Médica"),
+            label: "Clínica Médica",
             color: "#F06D57",
             cutout: "50%",
         },
         {
-            label: "Ginecologia e Obstetrícia",
             value: getProfessionalsBySpecialty("Ginecologia e Obstetrícia"),
+            label: "Ginecologia e Obstetrícia",
             color: "#FFBBBE",
             cutout: "50%",
         },
         {
-            label: "Pediatria",
             value: getProfessionalsBySpecialty("Pediatria"),
+            label: "Pediatria",
             color: "#23D355",
             cutout: "50%",
         },
         {
-            label: "Dermatologia",
             value: getProfessionalsBySpecialty("Dermatologia"),
+            label: "Dermatologia",
             color: "#FF9900",
             cutout: "50%",
         },
         {
-            label: "Psiquiatria",
             value: getProfessionalsBySpecialty("Psiquiatria"),
+            label: "Psiquiatria",
             color: "#BA35E9",
             cutout: "50%",
         },
         {
-            label: "Endocrinologia",
             value: getProfessionalsBySpecialty("Endocrinologia"),
+            label: "Endocrinologia",
             color: "#2B65F8",
             cutout: "50%",
         },
         {
-            label: "Gastroenterologia",
             value: getProfessionalsBySpecialty("Gastroenterologia"),
+            label: "Gastroenterologia",
             color: "#80F847",
             cutout: "50%",
         },
         {
-            label: "Medicina de Emergência",
             value: getProfessionalsBySpecialty("Medicina de Emergência"),
+            label: "Medicina de Emergência",
             color: "#F06D57",
             cutout: "50%",
         },
@@ -82,7 +82,7 @@ const Index = () => {
             }
         },
         cutout: data.map((item) => item.cutout),
-    };
+    }
 
     const finalData = {
         labels: data.map((item) => item.label),
@@ -95,7 +95,7 @@ const Index = () => {
                 dataVisibility: new Array(data.length).fill(true),
             },
         ],
-    };
+    }
 
     return (
         <Card w={"100%"} borderTop={"5px solid #FF9900"}>
@@ -146,4 +146,4 @@ const Index = () => {
     )
 }
 
-export default Index
+export default Chart

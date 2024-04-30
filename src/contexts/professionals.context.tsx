@@ -7,6 +7,8 @@ import { Professional } from "@/types/professional.type"
 interface ProfessionalContextType {
     professionals: Array<Professional>,
     filteredProfessionals: Array<Professional>,
+    selectedProfessional: Professional | any,
+    setSelectedProfessional: React.Dispatch<React.SetStateAction<Professional>> | any,
     setProfessionals: React.Dispatch<React.SetStateAction<Array<Professional>>>,
     addProfessional: (newProfessional: Professional) => void,
     removeProfessional: (id: number) => void,
@@ -16,7 +18,7 @@ interface ProfessionalContextType {
     getProfessionalByCpf: (cpf: string) => boolean | Professional[],
     getProfessionalsBySpecialty: (specialty: string) => number,
     getProfessionalsByCurrentMonth: () => number,
-    getProfessionasFiltered: (name?: string, status?: boolean, specialty?: string) => void
+    getProfessionalsFiltered: (name?: string, status?: boolean, specialty?: string) => void
 }
 
 const ProfessionalContext = createContext<ProfessionalContextType | undefined>(undefined)
@@ -24,27 +26,28 @@ const ProfessionalContext = createContext<ProfessionalContextType | undefined>(u
 export function ProviderProfessional({ children }: { children: ReactNode }) {
     const [professionals, setProfessionals] = useState<Array<Professional>>(defaultDatabase)
     const [filteredProfessionals, setFilteredProfessionals] = useState<Array<Professional>>([])
+    const [selectedProfessional, setSelectedProfessional] = useState<Professional>()
 
     const addProfessional = (newProfessional: Professional) => {
-        setProfessionals(prevProfessionals => [...prevProfessionals, newProfessional]);
+        setProfessionals(prevProfessionals => [...prevProfessionals, newProfessional])
     }
 
     const removeProfessional = (id: number) => {
         setProfessionals(prevProfessionals =>
             prevProfessionals.filter(professional => professional.id !== id)
-        );
+        )
     }
 
     const updateProfessional = (updatedProfessional: Professional) => {
         setProfessionals(prevProfessionals =>
             prevProfessionals.map(professional => {
                 if (professional.id === updatedProfessional.id) {
-                    return { ...professional, ...updatedProfessional };
+                    return { ...professional, ...updatedProfessional }
                 } else {
-                    return professional;
+                    return professional
                 }
             })
-        );
+        )
     }
 
     const getProfessionalsAll = () => {
@@ -52,52 +55,52 @@ export function ProviderProfessional({ children }: { children: ReactNode }) {
     }
 
     const getProfessionalsByStatus = (status: boolean) => {
-        const draft = professionals.filter((professional) => professional.status === status || professional?.status?.toString() === `${status}`);
+        const draft = professionals.filter((professional) => professional.status === status || professional?.status?.toString() === `${status}`)
         return draft.length
     }
 
     const getProfessionalByCpf = (cpf: string) => {
         const draft = professionals.filter((professional) => professional.cpf?.replace(/[^\d]/g, '') === cpf.replace(/[^\d]/g, ''))
         return draft.length > 0 ? true : false
-    };
+    }
 
     const getProfessionalsBySpecialty = (specialty: string) => {
-        const draft = professionals.filter((professional) => professional.specialty === specialty);
+        const draft = professionals.filter((professional) => professional.specialty === specialty)
         return draft.length
     }
 
     const getProfessionalsByCurrentMonth = () => {
-        const currentDate = new Date();
-        const currentMonth = currentDate.getMonth() + 1;
+        const currentDate = new Date()
+        const currentMonth = currentDate.getMonth() + 1
 
         const draft = professionals.filter((profissional) => {
             // Ignore because the date is saving like string not date
             // @ts-ignore
-            const createdDate = new Date(profissional?.created_at);
-            const createdMonth = createdDate.getMonth() + 1;
+            const createdDate = new Date(profissional?.created_at)
+            const createdMonth = createdDate.getMonth() + 1
 
-            return createdMonth === currentMonth;
-        });
+            return createdMonth === currentMonth
+        })
 
         return draft.length
     }
 
-    const getProfessionasFiltered = (filters: any) => {
+    const getProfessionalsFiltered = (filters: any) => {
         if (Object.keys(filters).length === 0) {
-            return professionals;
+            return professionals
         }
         const draft = professionals.filter(professional => {
             if (filters.name && professional.name != filters.name) {
-                return false;
+                return false
             }
             if (filters.status && professional?.status?.toString() !== filters.status) {
-                return false;
+                return false
             }
             if (filters.specialty && professional.specialty != filters.specialty) {
-                return false;
+                return false
             }
-            return true;
-        });
+            return true
+        })
         setFilteredProfessionals(draft)
     }
 
@@ -110,6 +113,8 @@ export function ProviderProfessional({ children }: { children: ReactNode }) {
             value={{
                 professionals,
                 filteredProfessionals,
+                selectedProfessional,
+                setSelectedProfessional,
                 setProfessionals,
                 addProfessional,
                 removeProfessional,
@@ -119,7 +124,7 @@ export function ProviderProfessional({ children }: { children: ReactNode }) {
                 getProfessionalByCpf,
                 getProfessionalsBySpecialty,
                 getProfessionalsByCurrentMonth,
-                getProfessionasFiltered
+                getProfessionalsFiltered
             }}
         >
             {children}

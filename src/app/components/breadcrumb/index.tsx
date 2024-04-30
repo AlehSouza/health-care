@@ -1,18 +1,21 @@
 import { Breadcrumb, BreadcrumbItem, BreadcrumbLink, Flex } from "@chakra-ui/react"
 import { FaChevronRight } from "react-icons/fa"
 
-// #TODO REMOVE ANYS
-type IBreadcrumb = {
-    breadcrumbpath: any,
+interface Breadcrumb {
+    label: string,
+    path: string
 }
 
-const Index = ({ breadcrumbpath }: IBreadcrumb) => {
+type IBreadcrumb = {
+    breadcrumbpath: Array<Breadcrumb>
+}
+
+const BreadcrumbComponent = ({ breadcrumbpath }: IBreadcrumb) => {
     return (
         <Flex width={"100%"}>
             <Breadcrumb spacing="8px" separator={<FaChevronRight color="gray.500" />}>
                 {
-                    // #TODO REMOVE ANYS
-                    breadcrumbpath.map((path: any, index: number) => {
+                    breadcrumbpath.map((path, index: number) => {
                         return (
                             <BreadcrumbItem key={index}>
                                 <BreadcrumbLink href={path.path}>{path.label}</BreadcrumbLink>
@@ -25,4 +28,4 @@ const Index = ({ breadcrumbpath }: IBreadcrumb) => {
     )
 }
 
-export default Index
+export default BreadcrumbComponent

@@ -1,4 +1,4 @@
-import { Avatar, Box, Card, CardBody, CardHeader, Flex, Heading, IconButton, Text, Tooltip } from "@chakra-ui/react"
+import { Box, Card, CardBody, CardHeader, Flex, Heading, IconButton, Text, Tooltip } from "@chakra-ui/react"
 import { ReactNode } from "react"
 import { FaInfoCircle } from "react-icons/fa"
 
@@ -10,7 +10,7 @@ type IDashboardCard = {
     tooltip: string,
 }
 
-const Index = ({ title, color, icon, quantity, tooltip }: IDashboardCard) => {
+const DashboardCard = ({ title, color, icon, quantity, tooltip }: IDashboardCard) => {
     return (
         <Card
             width={{
@@ -59,4 +59,4 @@ const Index = ({ title, color, icon, quantity, tooltip }: IDashboardCard) => {
     )
 }
 
-export default Index
+export default DashboardCard

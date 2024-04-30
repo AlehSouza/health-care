@@ -17,7 +17,7 @@ type ISelectProps = SelectProps & {
     isReq: boolean
 }
 
-const Index: React.ForwardRefRenderFunction<HTMLButtonElement, ISelectProps> = (
+const SelectEnhanced: React.ForwardRefRenderFunction<HTMLButtonElement, ISelectProps> = (
     { children, name, label, isReq, error = null, ...props },
     ref
 ) => {
@@ -51,4 +51,4 @@ const Index: React.ForwardRefRenderFunction<HTMLButtonElement, ISelectProps> = (
     )
 }
 
-export default forwardRef(Index)
+export default forwardRef(SelectEnhanced)

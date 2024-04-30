@@ -1,4 +1,4 @@
-import axiosConfig from "axios";
+import axiosConfig from "axios"
 
 const baseURL = ""
 

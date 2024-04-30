@@ -19,8 +19,8 @@ type IInputProps = InputProps & {
   isReq?: boolean
 }
 
-const Index: React.ForwardRefRenderFunction<HTMLInputElement, IInputProps> = (
-  { name, label, error = null, mask = "defauldValue", isReq, ...props },
+const InputEnhanced: React.ForwardRefRenderFunction<HTMLInputElement, IInputProps> = (
+  { name, label, error = null, mask = "defaultValue", isReq, ...props },
   ref
 ) => {
   function applyMask(event: FormEvent<HTMLInputElement>) {
@@ -57,4 +57,4 @@ const Index: React.ForwardRefRenderFunction<HTMLInputElement, IInputProps> = (
   )
 }
 
-export default forwardRef(Index)
+export default forwardRef(InputEnhanced)

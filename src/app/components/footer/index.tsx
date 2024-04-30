@@ -2,8 +2,8 @@ import {
     Box,
     Text,
     Flex,
-} from "@chakra-ui/react";
-import { FaCapsules } from "react-icons/fa";
+} from "@chakra-ui/react"
+import { FaCapsules } from "react-icons/fa"
 
 const Logo = () => {
     return (
@@ -12,11 +12,11 @@ const Logo = () => {
                 <FaCapsules fontSize={"18px"} color="white" />
             </Flex>
         </Flex>
-    );
-};
+    )
+}
 
-const Index = () => {
-    const currentYear = new Date().getFullYear();
+const Footer = () => {
+    const currentYear = new Date().getFullYear()
     return (
         <Box
             bg={"#10644B"}
@@ -47,7 +47,7 @@ const Index = () => {
                 </Text>
             </Box>
         </Box>
-    );
+    )
 }
 
-export default Index
+export default Footer
