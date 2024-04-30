@@ -3,7 +3,7 @@
 import { Box, Button, Card, Flex, FormControl, FormLabel, Input, Select, Table, TableCaption, Tbody, Td, Text, Th, Thead, Tooltip, Tr, useDisclosure, useToast } from "@chakra-ui/react"
 import { useCallback, useEffect, useState } from "react"
 import { useProfessional } from "@/contexts/professionals.context"
-import { FaEye, FaPen, FaPlus, FaSearch, FaTrash } from "react-icons/fa"
+import { FaArrowLeft, FaArrowRight, FaEye, FaPen, FaPlus, FaSearch, FaTrash } from "react-icons/fa"
 import { useForm } from "react-hook-form"
 import ModalUpdateProfessional from "../modal-update-professional"
 import ModalDeleteProfessional from "../modal-delete-professional"
@@ -11,7 +11,7 @@ import ModalAddProfessional from "../modal-add-professional"
 import ModalViewProfessional from "../modal-view-professional"
 
 const TableProfessionals = () => {
-    const { filteredProfessionals, getProfessionalsFiltered, selectedProfessional, setSelectedProfessional} = useProfessional()
+    const { filteredProfessionals, getProfessionalsFiltered, selectedProfessional, setSelectedProfessional } = useProfessional()
     const [fileImage, setFileImage] = useState<string | null>(null)
 
     const {
@@ -125,7 +125,74 @@ const TableProfessionals = () => {
         )
     }
 
-    const TableListProfessionals = useCallback(() => {
+    const TableListProfessionals = () => {
+
+        const [selectedPage, setSelectedPage] = useState<any>(0)
+        const [tableItems, setTableItems] = useState<any>()
+        const [pagesQuantity, setPagesQuantity] = useState<any>()
+
+        const sliceFilteredProfessionals = () => {
+            const draft = []
+            for (var i = 0; i < filteredProfessionals.length; i = i + 5) {
+                draft.push(filteredProfessionals.slice(i, i + 5));
+            }
+            setPagesQuantity(draft.length)
+            setTableItems(draft)
+        }
+
+        const handleClick = (type: any) => {
+            if (type === 'prev') {
+                if (selectedPage <= 0) return
+                setSelectedPage(selectedPage - 1);
+            } else if (type === 'next') {
+                if (selectedPage >= (pagesQuantity - 1)) return
+                setSelectedPage(selectedPage + 1);
+            } else {
+                setSelectedPage(type);
+            }
+        }
+
+        const renderpagesQuantity = () => {
+            const quantityButtons = []
+            for (let i = 0; i < pagesQuantity; i++) {
+                quantityButtons.push(i)
+            }
+
+            return (
+                <Flex>
+                    <Button
+                        variant={'solid'}
+                        onClick={() => handleClick('prev')}
+                        mx={1}
+                    >
+                        <FaArrowLeft />
+                    </Button>
+                    {
+                        quantityButtons.map((number) => (
+                            <Button
+                                key={number}
+                                variant={number === selectedPage ? 'solid' : 'outline'}
+                                onClick={() => handleClick(number)}
+                                mx={1}
+                            >
+                                {number + 1}
+                            </Button>
+                        ))
+                    }
+                    <Button
+                        variant={'solid'}
+                        onClick={() => handleClick('next')}
+                        mx={1}
+                    >
+                        <FaArrowRight />
+                    </Button>
+                </Flex>
+            )
+        };
+
+        useEffect(() => {
+            sliceFilteredProfessionals()
+        }, [filteredProfessionals])
 
         const applyIsActive = (status: boolean) => {
             return (
@@ -140,7 +207,6 @@ const TableProfessionals = () => {
                     </Box>
             )
         }
-
         const applySpecialtyLayout = (specialty: string) => {
             switch (specialty) {
                 case "Ortopedista":
@@ -169,92 +235,98 @@ const TableProfessionals = () => {
         }
 
         return (
-            filteredProfessionals.length > 0
+            tableItems != undefined &&
+            tableItems.length > 0
                 ?
-                <Table>
-                    <TableCaption>
+                <Flex flexDir={'column'}>
+                    <Table>
+                        <Thead>
+                            <Tr>
+                                <Th>Nome</Th>
+                                <Th>Status</Th>
+                                <Th>CFM / CRM</Th>
+                                <Th>Região</Th>
+                                <Th>Especialidade</Th>
+                                <Th>Email</Th>
+                                <Th>Telefone</Th>
+                                <Th>Ações</Th>
+                            </Tr>
+                        </Thead>
+                        <Tbody>
+                            {
+                                tableItems[selectedPage]?.map((professional: any) => {
+                                    const name = professional.name.split(" ")
+                                    return (
+                                        <Tr key={professional.id}>
+                                            <Td>{professional.name}</Td>
+                                            <Td>{applyIsActive(professional.status)}</Td>
+                                            <Td>{professional.registerCfmCrm}</Td>
+                                            <Td>{professional.regionActing}</Td>
+                                            <Td>
+                                                <Flex alignItems={'center'} gap={2}>
+                                                    <Box
+                                                        height={'4px'}
+                                                        width={'4px'}
+                                                        border={`4px solid ${applySpecialtyLayout(professional.specialty)}`}
+                                                        p={1}
+                                                        borderRadius={'lg'}
+                                                    />
+                                                    <Text>
+                                                        {professional.specialty}
+                                                    </Text>
+                                                </Flex>
+                                            </Td>
+                                            <Td>{professional.email || 'Email não Cadastrado'}</Td>
+                                            <Td>{professional.phone || 'Telefone não Cadastrado'}</Td>
+                                            <Td>
+                                                <Flex gap={4}>
+                                                    <Tooltip placement="left" label={`Clique para visualizar o registro de ${name[0]}`} textAlign={"center"} p={2} bgColor={"black"} borderRadius={"lg"}>
+                                                        <Button bgColor={"#1A936F"} _hover={{ bgColor: "#10644B" }} onClick={() => {
+                                                            setSelectedProfessional(professional)
+                                                            onOpenView()
+                                                        }}>
+                                                            <FaEye color="white" />
+                                                        </Button>
+                                                    </Tooltip>
+                                                    <Tooltip placement="left" label={`Clique para editar o registro de ${name[0]}`} textAlign={"center"} p={2} bgColor={"black"} borderRadius={"lg"}>
+                                                        <Button colorScheme="linkedin" onClick={() => {
+                                                            setFileImage('')
+                                                            setSelectedProfessional(professional)
+                                                            onOpenUpdate()
+                                                        }}>
+                                                            <FaPen />
+                                                        </Button>
+                                                    </Tooltip>
+                                                    <Tooltip placement="left" label={`Clique para Apagar o registro de ${name[0]}`} textAlign={"center"} p={2} bgColor={"black"} borderRadius={"lg"}>
+                                                        <Button colorScheme="red" onClick={() => {
+                                                            setSelectedProfessional(professional)
+                                                            onOpenRemove()
+                                                        }}>
+                                                            <FaTrash />
+                                                        </Button>
+                                                    </Tooltip>
+                                                </Flex>
+                                            </Td>
+                                        </Tr>
+                                    )
+                                })
+                            }
+                        </Tbody>
+                    </Table >
+                    <Flex justifyContent={'center'} alignItems={'center'} width={'100%'} p={4} pb={2}>
+                        {renderpagesQuantity()}
+                    </Flex>
+                    <Flex justifyContent={'center'} alignItems={'center'} width={'100%'} p={2} pb={4}>
                         Usuários cadastrados no sistema de <b>Umbaraco</b>
-                    </TableCaption>
-                    <Thead>
-                        <Tr>
-                            <Th>Nome</Th>
-                            <Th>Status</Th>
-                            <Th>CFM / CRM</Th>
-                            <Th>Região</Th>
-                            <Th>Especialidade</Th>
-                            <Th>Email</Th>
-                            <Th>Telefone</Th>
-                            <Th>Ações</Th>
-                        </Tr>
-                    </Thead>
-                    <Tbody>
-                        {
-                            filteredProfessionals?.map((professional: any) => {
-                                const name = professional.name.split(" ")
-                                return (
-                                    <Tr key={professional.id}>
-                                        <Td>{professional.name}</Td>
-                                        <Td>{applyIsActive(professional.status)}</Td>
-                                        <Td>{professional.registerCfmCrm}</Td>
-                                        <Td>{professional.regionActing}</Td>
-                                        <Td>
-                                            <Flex alignItems={'center'} gap={2}>
-                                                <Box
-                                                    height={'4px'}
-                                                    width={'4px'}
-                                                    border={`4px solid ${applySpecialtyLayout(professional.specialty)}`}
-                                                    p={1}
-                                                    borderRadius={'lg'}
-                                                />
-                                                <Text>
-                                                    {professional.specialty}
-                                                </Text>
-                                            </Flex>
-                                        </Td>
-                                        <Td>{professional.email || 'Email não Cadastrado'}</Td>
-                                        <Td>{professional.phone || 'Telefone não Cadastrado'}</Td>
-                                        <Td>
-                                            <Flex gap={4}>
-                                                <Tooltip placement="left" label={`Clique para visualizar o registro de ${name[0]}`} textAlign={"center"} p={2} bgColor={"black"} borderRadius={"lg"}>
-                                                    <Button bgColor={"#1A936F"} _hover={{ bgColor: "#10644B" }} onClick={() => {
-                                                        setSelectedProfessional(professional)
-                                                        onOpenView()
-                                                    }}>
-                                                        <FaEye color="white" />
-                                                    </Button>
-                                                </Tooltip>
-                                                <Tooltip placement="left" label={`Clique para editar o registro de ${name[0]}`} textAlign={"center"} p={2} bgColor={"black"} borderRadius={"lg"}>
-                                                    <Button colorScheme="linkedin" onClick={() => {
-                                                        setFileImage('')
-                                                        setSelectedProfessional(professional)
-                                                        onOpenUpdate()
-                                                    }}>
-                                                        <FaPen />
-                                                    </Button>
-                                                </Tooltip>
-                                                <Tooltip placement="left" label={`Clique para Apagar o registro de ${name[0]}`} textAlign={"center"} p={2} bgColor={"black"} borderRadius={"lg"}>
-                                                    <Button colorScheme="red" onClick={() => {
-                                                        setSelectedProfessional(professional)
-                                                        onOpenRemove()
-                                                    }}>
-                                                        <FaTrash />
-                                                    </Button>
-                                                </Tooltip>
-                                            </Flex>
-                                        </Td>
-                                    </Tr>
-                                )
-                            })
-                        }
-                    </Tbody>
-                </Table >
+                    </Flex>
+                </Flex>
                 :
                 <Flex p={"200px"} flexDir={"column"} justifyContent={"center"} alignItems={"center"} width={"100%"}>
                     <Text>Nenhum dado correspondente.</Text>
                     <Text cursor={"pointer"} onClick={() => onOpenAdd()}>Tente cadastrar um novo <b>Profissional</b></Text>
                 </Flex>
         )
-    }, [filteredProfessionals])
+    }
 
     return (
         <Flex gap={8} width={"100%"} flexDir={"column"} pt={5}>

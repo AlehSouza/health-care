@@ -1,18 +1,31 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+Este é um repositório criado por mim [Alexandre Souza](https://alehsouza.dev/) com as Tecnologias TypeScript, Next.js, React.js, Chakra Ui, React Hook Form, Yup e Axios, para um desafio criado pela [`Umbaraco`](https://github.com/umbaraco/test-frontend)
 
-## Getting Started
+## Primeiros passos
 
-First, run the development server:
+Primeiramente como o projeto não utiliza Json-Server, apenas mocks dentro da propria aplicação, logo você pode testar toda a ferramente clicando [aqui](https://umbaraco-frontend-challenge.vercel.app/)
+
+Caso queira rodar locamente... 
+
+Atenção, é recomendável a versão do node 20 ou superior, pois foi a versão escolhida para o desenvolvimento do projeto.
+
+Após clonar o projeto com o 
 
 ```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+git clone [url]
 ```
+
+Você irá rodar o comando abaixo para instalar todas as dependencias
+
+```bash
+npm i
+```
+
+Após ter instalado tudo, você irá rodar o projeto localmente com o comando
+
+```bash
+npm run serve
+```
+
 
 Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
 
@@ -20,17 +33,16 @@ You can start editing the page by modifying `app/page.tsx`. The page auto-update
 
 This project uses [`next/font`](https://nextjs.org/docs/basic-features/font-optimization) to automatically optimize and load Inter, a custom Google Font.
 
-## Learn More
+## Rotas
 
 To learn more about Next.js, take a look at the following resources:
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+- [/](https://umbaraco-frontend-challenge.vercel.app/) - Responsavel pela etapa de Login
+- [/dashboard](https://umbaraco-frontend-challenge.vercel.app/dashboard) - Responsavel pela etapa do dashboard com os dados dos profissionais da Saúde
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
+## Vercel
 
-## Deploy on Vercel
+O projeto foi completamente upado na vercel.
+Aqui esta o link para compartilhar: [https://umbaraco-frontend-challenge.vercel.app/](https://umbaraco-frontend-challenge.vercel.app/dashboard)
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
+Obrigado
