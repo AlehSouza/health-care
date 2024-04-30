@@ -1,7 +1,7 @@
 "use client"
 
 import { Box, Button, Card, Flex, Text, useToast } from "@chakra-ui/react"
-import { FaArrowRight, FaFileImage, FaUserEdit, } from "react-icons/fa"
+import { FaArrowRight, FaCamera, FaFileImage, FaUserEdit, } from "react-icons/fa"
 import { useForm } from "react-hook-form"
 import { Modal } from ".."
 import { useProfessional } from "@/contexts/professionals.context"
@@ -144,6 +144,26 @@ const ModalUpdateProfessional = ({ onCloseUpdate, isOpenUpdate, fileImage, setFi
                     <Flex width={"100%"} justifyContent={"left"} alignItems="center" flexDirection={'row'} bgColor={'#FF9900'} borderRadius={'lg'} p={6}>
                         <Box width={'150px'} height={'150px'} pos={'relative'} borderRadius={'100px'} overflow={'hidden'} property="true" border={'5px solid white'}>
                             <Image src={`${fileImage || selectedProfessional?.image}`} sizes="(max-width: 150px) 150px" fill alt={`example icon`} />
+                            <label htmlFor="image">
+                                <Flex
+                                    width={'140px'}
+                                    height={'140px'}
+                                    position={'absolute'}
+                                    bgColor={'rgba(0,0,0,0.5)'}
+                                    left={0}
+                                    top={0}
+                                    opacity={0}
+                                    _hover={{ opacity: 1 }}
+                                    justifyContent={'center'}
+                                    alignItems={'center'}
+                                    flexDir={'column'}
+                                    display={'flex'}
+                                    cursor={'pointer'}
+                                >
+                                    <FaCamera color={'white'} />
+                                    <Text color={'white'} pt={1}>Alterar foto</Text>
+                                </Flex>
+                            </label>
                         </Box>
                         <Flex flexDir={'column'} px={4} margin={'0 auto'}>
                             <Text color={'white'} fontWeight={'bold'} py={2} pb={0} fontSize={'22px'}>

@@ -1,6 +1,6 @@
 
 import { Box, Button, Flex, Text, useToast } from "@chakra-ui/react"
-import { FaFileImage, FaUserPlus } from "react-icons/fa"
+import { FaCamera, FaFileImage, FaUserPlus } from "react-icons/fa"
 import { useForm } from "react-hook-form"
 import { Modal } from ".."
 import { useProfessional } from "@/contexts/professionals.context"
@@ -152,8 +152,28 @@ const ModalAddProfessional = ({ fileImage, setFileImage, onCloseAdd, isOpenAdd }
             <form onSubmit={handleSubmit(onSubmit)}>
                 <Flex flexDir={"column"} pt={2}>
                     <Flex width={"100%"} justifyContent={"left"} alignItems="center" flexDirection={'row'} bgColor={'#1A936F'} borderRadius={'lg'} p={6}>
-                        <Box width={'150px'} height={'150px'} pos={'relative'} borderRadius={'100px'} overflow={'hidden'} property="true" border={'5px solid white'}>
+                        <Box width={'150px'} height={'150px'} pos={'relative'} borderRadius={'100px'} overflow={'hidden'} property="true" border={'5px solid white'} position={'relative'}>
                             <Image src={fileImage ? fileImage : 'https://firebasestorage.googleapis.com/v0/b/projects-cd0f3.appspot.com/o/umbaraco%2Fprofile_pic_man.png?alt=media&token=2a1c1256-c7d6-46ac-8488-28207f2bc760'} fill alt={`example icon`} />
+                            <label htmlFor="image">
+                                <Flex
+                                    width={'140px'}
+                                    height={'140px'}
+                                    position={'absolute'}
+                                    bgColor={'rgba(0,0,0,0.5)'}
+                                    left={0}
+                                    top={0}
+                                    opacity={0}
+                                    _hover={{ opacity: 1 }}
+                                    justifyContent={'center'}
+                                    alignItems={'center'}
+                                    flexDir={'column'}
+                                    display={'flex'}
+                                    cursor={'pointer'}
+                                >
+                                    <FaCamera color={'white'} />
+                                    <Text color={'white'} pt={1}>Alterar foto</Text>
+                                </Flex>
+                            </label>
                         </Box>
                         <Text color={'white'} fontWeight={'bold'} p={4} fontSize={'22px'}>
                             Umbaraco <br />
