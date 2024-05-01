@@ -182,14 +182,6 @@ const ModalViewProfessional = ({ selectedProfessional, onCloseView, isOpenView }
                             <br />
                             R$ {selectedProfessional?.currencyHour}
                         </Text>
-                        <Text
-                            py={2}
-                            fontSize={'16px'}
-                        >
-                            <b>Valor por hora:</b>
-                            <br />
-                            R$ {selectedProfessional?.currencyHour}
-                        </Text>
                     </Flex>
 
                 </Flex>
