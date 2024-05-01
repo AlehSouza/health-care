@@ -143,7 +143,7 @@ const ModalUpdateProfessional = ({ onCloseUpdate, isOpenUpdate, fileImage, setFi
                 <Flex flexDir={"column"} pt={2}>
                     <Flex width={"100%"} justifyContent={"left"} alignItems="center" flexDirection={'row'} bgColor={'#FF9900'} borderRadius={'lg'} p={6}>
                         <Box width={'150px'} height={'150px'} pos={'relative'} borderRadius={'100px'} overflow={'hidden'} property="true" border={'5px solid white'}>
-                            <Image src={`${fileImage || selectedProfessional?.image}`} sizes="(max-width: 150px) 150px" fill alt={`example icon`} />
+                            <Image src={`${fileImage || selectedProfessional?.image || 'https://firebasestorage.googleapis.com/v0/b/projects-cd0f3.appspot.com/o/umbaraco%2Fprofile_pic_man.png?alt=media&token=2a1c1256-c7d6-46ac-8488-28207f2bc760'}`} sizes="(max-width: 150px) 150px" fill alt={`example icon`} />
                             <label htmlFor="image">
                                 <Flex
                                     width={'140px'}

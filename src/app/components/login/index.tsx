@@ -18,21 +18,19 @@ const Login = () => {
             <Flex flexDirection={"column"} gap={4} >
                 <Link href={"/dashboard"}>
                     <Button colorScheme="green" variant="solid" w={"100%"}>
-                        <Text fontSize={"13px"}>
-                            Login
-                        </Text>
+                            Entrar
                     </Button>
                 </Link>
                 <Button colorScheme="gray" variant="link" w={"100%"}>
                     <Text fontSize={"13px"}>
-                        Sign Up
+                        Cadastre-se
                     </Text>
                 </Button>
             </Flex>
             <Flex justifyContent={"center"} alignItems={"center"} pb={"50px"} fontSize={"13px"} color={"#5A3C34"}>
                 <Text textAlign={"center"}>
-                    By signing up, you confirm our <br />
-                    <b>Terms of Use</b> and <b>Privacy policy</b>
+                    Ao se cadastrar, você concorda com os nossos <br />
+                    <b>Termos de uso</b> e <b>Política de privacidade</b>
                 </Text>
             </Flex>
         </Flex>
