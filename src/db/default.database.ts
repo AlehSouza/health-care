@@ -21,7 +21,7 @@ const defaultDatabase = [
         "regionActing": "Itaquera",
         "status": true,
         "address": "Rua José pessota, 593 - 08.150-020",
-        "created_at": "2024-4-29",
+        "created_at": "2024-05-01",
 
     },
     {
@@ -115,7 +115,7 @@ const defaultDatabase = [
         "uf": "RS",
         "city": "Porto Alegre",
         "registerCfmCrm": "GHI67890",
-        "specialty": "Dermatologia",
+        "specialty": "Pediatria",
         "currencyHour": "1,99",
         "service": "Consulta Online",
         "regionActing": "Capão Redondo",
@@ -379,7 +379,7 @@ const defaultDatabase = [
         "uf": "MG",
         "city": "Belo Horizonte",
         "registerCfmCrm": "UVW12345",
-        "specialty": "Dermatologia",
+        "specialty": "Pediatria",
         "currencyHour": "1,99",
         "service": "Consulta Online",
         "regionActing": "Savassi",
@@ -403,7 +403,7 @@ const defaultDatabase = [
         "uf": "SP",
         "city": "São Paulo",
         "registerCfmCrm": "XYZ12345",
-        "specialty": "Dermatologia",
+        "specialty": "Pediatria",
         "currencyHour": "1,99",
         "service": "Consulta Online",
         "regionActing": "Pinheiros",
@@ -427,7 +427,7 @@ const defaultDatabase = [
         "uf": "RJ",
         "city": "Rio de Janeiro",
         "registerCfmCrm": "ABC12345",
-        "specialty": "Dermatologia",
+        "specialty": "Pediatria",
         "currencyHour": "1,99",
         "service": "Consulta Online",
         "regionActing": "Copacabana",
@@ -451,11 +451,11 @@ const defaultDatabase = [
         "uf": "PR",
         "city": "Curitiba",
         "registerCfmCrm": "DEF12345",
-        "specialty": "Dermatologia",
+        "specialty": "Pediatria",
         "currencyHour": "1,99",
         "service": "Consulta Online",
         "regionActing": "Batel",
-        "created_at": "2024-04-30"
+        "created_at": "2024-05-01"
     },
     {
         "id": 19,
@@ -479,7 +479,7 @@ const defaultDatabase = [
         "currencyHour": "1,99",
         "service": "Consulta Online",
         "regionActing": "Aldeota",
-        "created_at": "2024-04-30"
+        "created_at": "2024-05-01"
     },
     {
         "id": 20,

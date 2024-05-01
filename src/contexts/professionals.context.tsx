@@ -70,18 +70,13 @@ export function ProviderProfessional({ children }: { children: ReactNode }) {
     }
 
     const getProfessionalsByCurrentMonth = () => {
-        const currentDate = new Date()
-        const currentMonth = currentDate.getMonth() + 1
-
+        let dateInst = new Date();
         const draft = professionals.filter((profissional) => {
-            // Ignore because the date is saving like string not date
-            // @ts-ignore
-            const createdDate = new Date(profissional?.created_at)
-            const createdMonth = createdDate.getMonth() + 1
-
-            return createdMonth === currentMonth
+            let slicedDate = profissional.created_at.split("-")
+            let actualMonth = dateInst.getMonth() + 1;
+            const createdMonth = parseInt(slicedDate[1])
+            return actualMonth === createdMonth
         })
-
         return draft.length
     }
 
@@ -91,6 +86,9 @@ export function ProviderProfessional({ children }: { children: ReactNode }) {
         }
         const draft = professionals.filter(professional => {
             if (filters.name && professional.name != filters.name) {
+                return false
+            }
+            if (filters.registerCfmCrm && professional.registerCfmCrm !== filters.registerCfmCrm) {
                 return false
             }
             if (filters.status && professional?.status?.toString() !== filters.status) {

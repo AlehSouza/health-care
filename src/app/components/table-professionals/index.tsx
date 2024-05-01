@@ -74,6 +74,15 @@ const TableProfessionals = () => {
                         </Flex>
                         <Flex
                             flexDir={"column"}
+                            w={"60%"}
+                        >
+                            <FormControl>
+                                <FormLabel fontSize={"14px"} color={"white"}>CFM / CRM</FormLabel>
+                                <Input {...register("registerCfmCrm")} placeholder="JKL54321" bgColor={"white"} maxLength={8} />
+                            </FormControl>
+                        </Flex>
+                        <Flex
+                            flexDir={"column"}
                             w={"20%"}
                         >
                             <FormControl>
@@ -126,7 +135,6 @@ const TableProfessionals = () => {
     }
 
     const TableListProfessionals = () => {
-
         const [selectedPage, setSelectedPage] = useState<any>(0)
         const [tableItems, setTableItems] = useState<any>()
         const [pagesQuantity, setPagesQuantity] = useState<any>()
@@ -207,6 +215,7 @@ const TableProfessionals = () => {
                     </Box>
             )
         }
+
         const applySpecialtyLayout = (specialty: string) => {
             switch (specialty) {
                 case "Ortopedista":
@@ -317,7 +326,7 @@ const TableProfessionals = () => {
                         {renderpagesQuantity()}
                     </Flex>
                     <Flex justifyContent={'center'} alignItems={'center'} width={'100%'} p={2} pb={4}>
-                        Usuários cadastrados no sistema de <b style={{ paddingLeft: '5px'}}>Umbaraco</b>
+                        Usuários cadastrados no sistema de <b style={{ paddingLeft: '5px' }}>Umbaraco</b>
                     </Flex>
                 </Flex>
                 :
