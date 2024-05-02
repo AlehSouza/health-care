@@ -1,5 +1,10 @@
 {
   "compilerOptions": {
+    "types": [
+      "node",
+      "jest",
+      "@testing-library/jest-dom"
+    ],
     "lib": [
       "dom",
       "dom.iterable",
@@ -36,5 +41,5 @@
   ],
   "exclude": [
     "node_modules"
-  ]
+  ],
 }
