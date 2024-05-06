@@ -31,8 +31,6 @@ Abra em [http://localhost:3000](http://localhost:3000) no seu navegador para ver
 
 ## Rotas
 
-To learn more about Next.js, take a look at the following resources:
-
 - [/](https://umbaraco-frontend-challenge.vercel.app/) - Responsavel pela etapa de Login
 - [/dashboard](https://umbaraco-frontend-challenge.vercel.app/dashboard) - Responsavel pela etapa do dashboard com os dados dos profissionais da Saúde
 
