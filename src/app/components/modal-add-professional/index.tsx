@@ -176,7 +176,7 @@ const ModalAddProfessional = ({ fileImage, setFileImage, onCloseAdd, isOpenAdd }
                             </label>
                         </Box>
                         <Text color={'white'} fontWeight={'bold'} p={4} fontSize={'22px'}>
-                            Umbaraco <br />
+                            HealthCare <br />
                             Profissional da Saúde 🥼
                         </Text>
                     </Flex>
@@ -284,7 +284,7 @@ const ModalAddProfessional = ({ fileImage, setFileImage, onCloseAdd, isOpenAdd }
                             {...register("email")}
                             isReq={false}
                             error={errors.email}
-                            placeholder="example@umbaraco.com.br"
+                            placeholder="example@healthCare.com.br"
                             width={"100%"}
                             mask="defaultValue"
                         />

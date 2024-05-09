@@ -43,7 +43,7 @@ const Footer = () => {
                     <Logo />
                 </Flex>
                 <Text pt={6} fontSize={"sm"} textAlign={"center"}>
-                    © {currentYear} Umbaraco Company. All rights reserved
+                    © {currentYear} HealthCare Company. All rights reserved
                 </Text>
             </Box>
         </Box>

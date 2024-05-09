@@ -9,7 +9,7 @@ import { useCallback } from "react"
 // Static, dont change
 const BreadcrumbPath = [
   {
-    label: "Umbaraco",
+    label: "HealthCare",
     path: "#"
   },
   {

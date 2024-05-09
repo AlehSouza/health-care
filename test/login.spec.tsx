@@ -4,9 +4,9 @@ import '@testing-library/jest-dom'
 import Login from '../src/app/components/login'
 
 describe('Login Component', () => {
-    test('renders Umbaraco title correctly', () => {
+    test('renders HealthCare title correctly', () => {
         render(<Login />)
-        const titleElement = screen.getByText('Umbaraco')
+        const titleElement = screen.getByText('HealthCare')
         expect(titleElement).toBeInTheDocument()
     })
 

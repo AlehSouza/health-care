@@ -167,7 +167,7 @@ const ModalUpdateProfessional = ({ onCloseUpdate, isOpenUpdate, fileImage, setFi
                         </Box>
                         <Flex flexDir={'column'} px={4} margin={'0 auto'}>
                             <Text color={'white'} fontWeight={'bold'} py={2} pb={0} fontSize={'22px'}>
-                                Umbaraco
+                                HealthCare
                             </Text>
                             <Text color={'white'} fontWeight={'bold'} py={2} fontSize={'22px'} noOfLines={1}>
                                 {selectedProfessional?.name} 🥼
@@ -278,7 +278,7 @@ const ModalUpdateProfessional = ({ onCloseUpdate, isOpenUpdate, fileImage, setFi
                             {...register("email")}
                             isReq={false}
                             error={errors.email}
-                            placeholder="example@umbaraco.com.br"
+                            placeholder="example@healthCare.com.br"
                             width={"100%"}
                             mask="defaultValue"
                         />

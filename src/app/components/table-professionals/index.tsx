@@ -326,7 +326,7 @@ const TableProfessionals = () => {
                         {renderpagesQuantity()}
                     </Flex>
                     <Flex justifyContent={'center'} alignItems={'center'} width={'100%'} p={2} pb={4}>
-                        Usuários cadastrados no sistema de <b style={{ paddingLeft: '5px' }}>Umbaraco</b>
+                        Usuários cadastrados no sistema de <b style={{ paddingLeft: '5px' }}>HealthCare</b>
                     </Flex>
                 </Flex>
                 :

@@ -8,7 +8,7 @@ type IDashboardLayout = {
 import type { Metadata } from "next"
 
 export const metadata: Metadata = {
-    title: "Umbaraco | Dashboard",
+    title: "HealthCare | Dashboard",
     description: "Dashboard with all professional data",
 }
 

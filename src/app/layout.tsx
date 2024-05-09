@@ -4,7 +4,7 @@ import "./global.css"
 import type { Metadata } from "next"
 
 export const metadata: Metadata = {
-  title: "Umbaraco | Login",
+  title: "HealthCare | Login",
   description: "Log in to our platform right now",
 }
 

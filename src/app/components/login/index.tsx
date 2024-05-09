@@ -5,11 +5,11 @@ const Login = () => {
     return (
         <Flex bgColor={"white"} w={"400px"} h={"100%"} p={12} borderRadius={"lg"} flexDirection={"column"} justifyContent={"space-between"} boxShadow={"lg"}>
             <Flex>
-                <Text fontWeight={"bold"} letterSpacing={"1px"} color={"#5A3C34"}>Umbaraco</Text>
+                <Text fontWeight={"bold"} letterSpacing={"1px"} color={"#5A3C34"}>HealthCare</Text>
             </Flex>
             <Flex flexDirection={"column"} color={"black"}>
                 <Text fontSize={"2rem"}>Bem-vindo a</Text>
-                <Text fontSize={"2rem"} fontWeight={"bold"}>Umbaraco 😎</Text>
+                <Text fontSize={"2rem"} fontWeight={"bold"}>HealthCare 😎</Text>
             </Flex>
             <Flex flexDirection={"column"} gap={4} >
                 <Input placeholder="Nome" fontSize={"13px"} />
@@ -18,7 +18,7 @@ const Login = () => {
             <Flex flexDirection={"column"} gap={4} >
                 <Link href={"/dashboard"}>
                     <Button colorScheme="green" variant="solid" w={"100%"}>
-                            Entrar
+                        Entrar
                     </Button>
                 </Link>
                 <Button colorScheme="gray" variant="link" w={"100%"}>
